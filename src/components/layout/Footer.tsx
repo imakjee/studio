@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, Lock, Globe } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, Lock, Globe, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const FOOTER_COLUMNS = [
@@ -73,6 +73,7 @@ const TRUST_ITEMS = [
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
+  const [isAtolExpanded, setIsAtolExpanded] = useState(false);
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
@@ -122,7 +123,7 @@ export default function Footer() {
         </div>
 
         {/* Section 2 — Trust Row */}
-        <div className="border-y border-white/10 py-10 mb-10">
+        <div className="border-t border-white/10 py-10">
           <div className="flex flex-wrap justify-center gap-12 md:gap-24 items-center">
             {TRUST_ITEMS.map((item, i) => (
               <div key={i} className="flex items-center gap-4">
@@ -135,8 +136,40 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Section: ATOL Protection Information */}
+        <div className="border-t border-white/10 py-10 mb-10 text-center">
+          <div className="max-w-4xl mx-auto px-4">
+            <h4 className="text-sm font-bold text-white uppercase tracking-widest mb-4">
+              ATOL Protection Information
+            </h4>
+            <p className="text-white/60 text-sm mb-4 leading-relaxed max-w-2xl mx-auto">
+              Some of the flights and flight-inclusive holidays on this website are financially protected by the ATOL scheme.
+            </p>
+            <button 
+              onClick={() => setIsAtolExpanded(!isAtolExpanded)}
+              className="group inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-bold text-sm"
+            >
+              <span>{isAtolExpanded ? 'Hide Details' : 'Read Full Protection Details'}</span>
+              {isAtolExpanded ? (
+                <ChevronUp className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
+              ) : (
+                <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+              )}
+            </button>
+
+            {isAtolExpanded && (
+              <div className="mt-8 p-8 bg-white/5 rounded-[32px] border border-white/10 text-left animate-in fade-in slide-in-from-top-4 duration-500">
+                <h5 className="font-bold text-white mb-4 text-lg">ATOL Protection</h5>
+                <p className="text-white/60 text-xs md:text-sm leading-relaxed space-y-4">
+                  Some of the flights and flight-inclusive holidays on this website are financially protected by the ATOL scheme. But ATOL protection does not apply to all holiday and travel services listed on this website. Please ask us to confirm what protection may apply to your booking. If you do not receive an ATOL Certificate then the booking will not be ATOL protected. If you do receive an ATOL Certificate but all the parts of your trip are not listed on it, those parts will not be ATOL protected. Please see our booking conditions for information, or for more information about financial protection and the ATOL Certificate go to: <a href="http://www.atol.org.uk/ATOLCertificate" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-bold">www.atol.org.uk/ATOLCertificate</a>.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Section 3 — Bottom Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-white/40 text-sm">
             © {currentYear ?? '2024'} Elite Escapes. All rights reserved.
           </div>
