@@ -1,3 +1,4 @@
+
 'use client';
 
 import { firebaseConfig } from '@/firebase/config';
@@ -26,6 +27,7 @@ export function initializeFirebase() {
 
 export function getSdks(firebaseApp: FirebaseApp) {
   // Use initializeFirestore with settings to enable long polling for better stability in proxy/IDE environments
+  // This is a production best-practice for environments with WebSocket restrictions
   const firestore = initializeFirestore(firebaseApp, {
     experimentalForceLongPolling: true,
   });

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect, useMemo } from 'react';
@@ -26,14 +27,12 @@ export default function MainHeader() {
   const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // Fetch all navigation items to avoid composite index requirements (filter/sort in memory)
   const navQuery = useMemoFirebase(() => query(
     collection(db, 'navigationItems'),
     limit(50)
   ), [db]);
   const { data: allNavItems } = useCollection(navQuery);
   
-  // Use dynamic items filtered and sorted in memory, fallback to static if empty
   const navItems = useMemo(() => {
     const dynamicItems = allNavItems
       ?.filter(item => item.group === 'mainHeader')
@@ -146,8 +145,8 @@ export default function MainHeader() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px] p-0">
-                <SheetTitle className="sr-only">Tailor Travels Navigation</SheetTitle>
-                <SheetDescription className="sr-only">Access holiday types, destinations, and expert travel advice.</SheetDescription>
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetDescription className="sr-only">Access holiday types and destinations.</SheetDescription>
                 <div className="flex flex-col h-full">
                   <div className="p-6 bg-primary text-white">
                     <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-2">Explore</p>
@@ -228,7 +227,7 @@ export default function MainHeader() {
                   </div>
                   <div className="grid grid-cols-2 gap-6">
                     <div className="relative h-48 rounded-2xl overflow-hidden group cursor-pointer">
-                      <Image src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=800" alt="Family holiday options" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                      <Image src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=800" alt="Family Adventures" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                       <div className="absolute bottom-4 left-4 text-white">
                         <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">New for 2024</p>
@@ -236,7 +235,7 @@ export default function MainHeader() {
                       </div>
                     </div>
                     <div className="relative h-48 rounded-2xl overflow-hidden group cursor-pointer">
-                      <Image src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800" alt="Wellness retreat options" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                      <Image src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800" alt="Wellness Retreats" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                       <div className="absolute bottom-4 left-4 text-white">
                         <p className="text-xs font-bold uppercase tracking-widest text-accent mb-1">Relaxation</p>
@@ -281,7 +280,7 @@ export default function MainHeader() {
                         onClick={() => setActiveMega(null)}
                       >
                         <div className="relative h-40 rounded-2xl overflow-hidden shadow-md">
-                          <Image src={dest.imageUrl} alt={`${dest.name} destination preview`} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                          <Image src={dest.imageUrl} alt={dest.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                           <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
                         </div>
                         <div>

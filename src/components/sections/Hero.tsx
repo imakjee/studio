@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -15,49 +16,51 @@ export default function Hero() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-beach');
 
   return (
-    <section className="relative min-h-[700px] py-20 overflow-hidden w-full">
-      {/* Background with overlay (Stretches Full Width) */}
+    <section className="relative min-h-[600px] lg:min-h-[750px] flex items-center overflow-hidden w-full">
+      {/* Background with high-priority loading */}
       <div className="absolute inset-0 z-0">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
-            alt="Tailor Travels Hero Background"
+            alt="Luxury beach holiday destination - Tailor Travels"
             fill
             className="object-cover"
-            priority // CRITICAL: Ensure Hero image loads first for better LCP
-            data-ai-hint="luxury beach"
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            quality={85}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </div>
 
-      {/* Centered Content Container */}
+      {/* Hero Content */}
       <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
         <div className="text-center mb-12 max-w-4xl mx-auto">
-          <h1 className="font-headline text-4xl md:text-6xl text-white font-bold mb-4 drop-shadow-lg">
+          <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl text-white font-bold mb-6 drop-shadow-xl animate-in fade-in slide-in-from-top-4 duration-1000">
             {settings?.heroHeading || 'Your Perfect Holiday Awaits'}
           </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-medium drop-shadow-md">
+          <p className="text-lg md:text-xl lg:text-2xl text-white/90 max-w-2xl mx-auto font-medium drop-shadow-md animate-in fade-in slide-in-from-top-6 duration-1000 delay-200">
             {settings?.heroSubtitle || 'Discover luxury destinations and unforgettable experiences worldwide.'}
           </p>
         </div>
 
-        <div className="w-full max-w-5xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
           <SearchBox />
           
           {/* Trust Badges */}
-          <div className="mt-8 flex flex-wrap justify-center gap-8 text-white">
-            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+          <div className="mt-12 flex flex-wrap justify-center gap-6 lg:gap-12 text-white">
+            <div className="flex items-center gap-2.5 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 hover:bg-white/10 transition-colors cursor-default">
               <Shield className="w-5 h-5 text-accent" />
-              <span className="text-sm font-medium">ATOL Protected</span>
+              <span className="text-sm font-bold tracking-tight">ATOL Protected</span>
             </div>
-            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+            <div className="flex items-center gap-2.5 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 hover:bg-white/10 transition-colors cursor-default">
               <Star className="w-5 h-5 text-accent fill-accent" />
-              <span className="text-sm font-medium">4.8/5 Customer Rating</span>
+              <span className="text-sm font-bold tracking-tight">4.8/5 Rated</span>
             </div>
-            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+            <div className="flex items-center gap-2.5 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 hover:bg-white/10 transition-colors cursor-default">
               <BadgeCheck className="w-5 h-5 text-accent" />
-              <span className="text-sm font-medium">Price Match Promise</span>
+              <span className="text-sm font-bold tracking-tight">Expert Travel Advice</span>
             </div>
           </div>
         </div>

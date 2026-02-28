@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -7,25 +8,13 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const Sheet = (props: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Root>) => (
-  <SheetPrimitive.Root {...props} />
-)
-Sheet.displayName = "Sheet"
+const Sheet = SheetPrimitive.Root
 
-const SheetTrigger = (props: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Trigger>) => (
-  <SheetPrimitive.Trigger {...props} />
-)
-SheetTrigger.displayName = "SheetTrigger"
+const SheetTrigger = SheetPrimitive.Trigger
 
-const SheetClose = (props: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Close>) => (
-  <SheetPrimitive.Close {...props} />
-)
-SheetClose.displayName = "SheetClose"
+const SheetClose = SheetPrimitive.Close
 
-const SheetPortal = (props: SheetPrimitive.DialogPortalProps) => (
-  <SheetPrimitive.Portal {...props} />
-)
-SheetPortal.displayName = "SheetPortal"
+const SheetPortal = SheetPrimitive.Portal
 
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
@@ -33,7 +22,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
