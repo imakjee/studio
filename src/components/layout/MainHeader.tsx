@@ -26,13 +26,13 @@ export default function MainHeader() {
   const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // Fetch Navigation Items for Header
+  // Fetch all navigation items and filter locally to avoid requires composite indexes
   const navQuery = useMemoFirebase(() => query(
     collection(db, 'navigationItems'), 
-    where('group', '==', 'mainHeader'),
     orderBy('order', 'asc')
   ), [db]);
-  const { data: navItems } = useCollection(navQuery);
+  const { data: allNavItems } = useCollection(navQuery);
+  const navItems = allNavItems?.filter(item => item.group === 'mainHeader') || [];
 
   // Fetch Popular Destinations for Mega Menu
   const destQuery = useMemoFirebase(() => query(collection(db, 'destinations'), where('isPopular', '==', true), limit(4)), [db]);
@@ -101,7 +101,7 @@ export default function MainHeader() {
           </div>
 
           {/* CMS Driven Links */}
-          {navItems?.map((item) => (
+          {navItems.map((item) => (
             <Link 
               key={item.id} 
               href={item.url} 
@@ -157,7 +157,7 @@ export default function MainHeader() {
                     <div>
                       <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Quick Links</h3>
                       <div className="flex flex-col gap-4">
-                        {navItems?.map((item) => (
+                        {navItems.map((item) => (
                           <Link key={item.id} href={item.url} className="text-lg font-bold text-primary">{item.label}</Link>
                         ))}
                         <Link href="/destinations" className="text-lg font-bold text-primary">All Destinations</Link>
