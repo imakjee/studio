@@ -1,7 +1,8 @@
 rules_version = '2';
 
 /**
- * ELITE ESCAPES - FIRESTORE SECURITY RULES
+ * TAILOR TRAVELS - FIRESTORE SECURITY RULES
+ * Updated to allow public listing of CMS-driven navigation and content.
  */
 
 service cloud.firestore {
@@ -23,6 +24,7 @@ service cloud.firestore {
 
     // --- COLLECTION RULES ---
 
+    // Publicly readable collections (CMS Content)
     match /holidays/{holidayId} {
       allow get, list: if true;
       allow create: if isAdmin();
@@ -53,9 +55,9 @@ service cloud.firestore {
       allow update, delete: if isExistingAdmin();
     }
 
-    match /newsletterSubscribers/{subscriberId} {
-      allow create: if true;
-      allow get, list: if isAdmin();
+    match /navigationItems/{navItemId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
       allow update, delete: if isExistingAdmin();
     }
 
@@ -65,27 +67,28 @@ service cloud.firestore {
       allow update, delete: if isExistingAdmin();
     }
 
-    match /navigationItems/{navItemId} {
-      allow get, list: if true;
+    // Special case: Company Info is a singleton document
+    match /companyInfo/{documentId} {
+      allow get: if true;
+      allow list: if false; // Should only get specific docs by ID
       allow create: if isAdmin();
       allow update, delete: if isExistingAdmin();
     }
 
-    match /companyInfo/{documentId} {
-      allow get: if true;
-      allow list: if false; 
-      allow create: if isAdmin();
+    // Private collection: Newsletter Subscribers
+    match /newsletterSubscribers/{subscriberId} {
+      allow create: if true;
+      allow get, list: if isAdmin();
       allow update, delete: if isExistingAdmin();
     }
 
     /**
      * @description Rules for Administrative Role management.
-     * Modified to allow users to read their own role and allow initial setup.
      */
     match /roles_admin/{userId} {
       // Allow user to read their own admin document to verify role
       allow get: if isSignedIn() && request.auth.uid == userId;
-      // Allow initial setup creation (in production this would be more restricted)
+      // Allow initial setup creation
       allow create: if isSignedIn() && request.auth.uid == userId;
       // Other admin management requires existing admin role
       allow list, update, delete: if isAdmin();
