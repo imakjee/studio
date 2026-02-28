@@ -1,0 +1,831 @@
+{
+  "entities": {
+    "CompanyInfo": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CompanyInfo",
+      "type": "object",
+      "description": "Stores global configuration and static company information for Elite Escapes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CompanyInfo entity."
+        },
+        "companyName": {
+          "type": "string",
+          "description": "The official name of the travel agency."
+        },
+        "logoUrl": {
+          "type": "string",
+          "description": "URL to the company's main logo image.",
+          "format": "uri"
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "The main contact telephone number for the company."
+        },
+        "openHoursText": {
+          "type": "string",
+          "description": "Descriptive text about the company's operating hours (e.g., 'Open 7 days a week')."
+        },
+        "emailAddress": {
+          "type": "string",
+          "description": "The primary contact email address for the company.",
+          "format": "email"
+        },
+        "address": {
+          "type": "string",
+          "description": "The physical postal address of the company's main office."
+        },
+        "copyrightText": {
+          "type": "string",
+          "description": "The copyright notice displayed in the footer (e.g., '© 2023 Elite Escapes')."
+        },
+        "atolBadgeUrl": {
+          "type": "string",
+          "description": "URL to the ATOL Protected badge image.",
+          "format": "uri"
+        },
+        "abtaBadgeUrl": {
+          "type": "string",
+          "description": "URL to the ABTA badge image.",
+          "format": "uri"
+        },
+        "getAQuoteButtonText": {
+          "type": "string",
+          "description": "The text displayed on the 'Get a Quote' button in the main header."
+        },
+        "callUsButtonText": {
+          "type": "string",
+          "description": "The text displayed on the 'Call Us' CTA button in the main header."
+        }
+      },
+      "required": [
+        "id",
+        "companyName",
+        "logoUrl",
+        "contactNumber",
+        "openHoursText",
+        "copyrightText",
+        "getAQuoteButtonText",
+        "callUsButtonText"
+      ]
+    },
+    "NavigationItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "NavigationItem",
+      "type": "object",
+      "description": "Represents an item in the main header navigation menu.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the NavigationItem entity."
+        },
+        "label": {
+          "type": "string",
+          "description": "The display text for the navigation link (e.g., 'Holidays', 'Cruises')."
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL that the navigation item links to.",
+          "format": "uri"
+        },
+        "order": {
+          "type": "number",
+          "description": "A numerical value indicating the display order of the navigation item."
+        },
+        "isExternal": {
+          "type": "boolean",
+          "description": "A flag indicating if the navigation link points to an external website."
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "url",
+        "order"
+      ]
+    },
+    "TrustBadge": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "TrustBadge",
+      "type": "object",
+      "description": "Represents a trust badge displayed in the hero section.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the TrustBadge entity."
+        },
+        "text": {
+          "type": "string",
+          "description": "The descriptive text for the trust badge (e.g., 'ATOL Protected', '4.8/5 Customer Rating')."
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "URL to the icon image associated with the trust badge.",
+          "format": "uri"
+        },
+        "order": {
+          "type": "number",
+          "description": "A numerical value indicating the display order of the trust badge."
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "iconUrl",
+        "order"
+      ]
+    },
+    "Destination": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Destination",
+      "type": "object",
+      "description": "Represents a geographical travel destination.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Destination entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the destination (e.g., 'Maldives', 'Paris')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the destination."
+        },
+        "country": {
+          "type": "string",
+          "description": "The country where the destination is located."
+        },
+        "imageUrls": {
+          "type": "array",
+          "description": "An array of URLs for images showcasing the destination.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isPopular": {
+          "type": "boolean",
+          "description": "A flag indicating if this destination should be featured in the 'Popular Destinations' section."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "country",
+        "imageUrls",
+        "isPopular"
+      ]
+    },
+    "Hotel": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Hotel",
+      "type": "object",
+      "description": "Represents a hotel where holidays can be booked.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Hotel entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The official name of the hotel."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the hotel and its amenities."
+        },
+        "address": {
+          "type": "string",
+          "description": "The street address of the hotel."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city where the hotel is located."
+        },
+        "country": {
+          "type": "string",
+          "description": "The country where the hotel is located."
+        },
+        "starRating": {
+          "type": "number",
+          "description": "The official star rating of the hotel (e.g., 3, 4, 5)."
+        },
+        "guestRating": {
+          "type": "number",
+          "description": "The average guest rating for the hotel (e.g., 4.5 out of 5)."
+        },
+        "imageUrls": {
+          "type": "array",
+          "description": "An array of URLs for images showcasing the hotel.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "destinationId": {
+          "type": "string",
+          "description": "Reference to the Destination where the hotel is located. (Relationship: Destination 1:N Hotel)"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "address",
+        "city",
+        "country",
+        "imageUrls",
+        "destinationId"
+      ]
+    },
+    "BoardType": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BoardType",
+      "type": "object",
+      "description": "Defines the type of board offered as part of a holiday package (e.g., All Inclusive, Half Board).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BoardType entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the board type (e.g., 'All Inclusive', 'Half Board', 'Self Catering', 'Bed & Breakfast')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of what the board type includes."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "HolidayType": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "HolidayType",
+      "type": "object",
+      "description": "Categories for different kinds of holidays (e.g., Beach, City Break, Cruise).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the HolidayType entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the holiday category (e.g., 'Beach Holiday', 'City Break', 'Cruise', 'Adventure')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the holiday type."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "Holiday": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Holiday",
+      "type": "object",
+      "description": "Represents a specific holiday package or deal offered by Elite Escapes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Holiday entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The main title of the holiday package (e.g., '7 Nights in Sunny Maldives')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the holiday package."
+        },
+        "imageUrls": {
+          "type": "array",
+          "description": "An array of URLs for images showcasing the holiday.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "durationDays": {
+          "type": "number",
+          "description": "The total number of days for the holiday package."
+        },
+        "pricePerPerson": {
+          "type": "number",
+          "description": "The current price per person for the holiday package."
+        },
+        "originalPricePerPerson": {
+          "type": "number",
+          "description": "The original price per person before any discounts were applied. (Optional, for deals)"
+        },
+        "discountAmount": {
+          "type": "number",
+          "description": "The amount of discount applied to the holiday package (e.g., £200). (Optional, for deals)"
+        },
+        "isSpecialOffer": {
+          "type": "boolean",
+          "description": "A flag indicating if this holiday is marked as a special offer."
+        },
+        "startDate": {
+          "type": "string",
+          "description": "The start date of the holiday package availability.",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "The end date of the holiday package availability.",
+          "format": "date-time"
+        },
+        "rating": {
+          "type": "number",
+          "description": "The overall rating for the holiday package (e.g., 4.8 out of 5)."
+        },
+        "locationDescription": {
+          "type": "string",
+          "description": "A human-readable summary of the holiday's location."
+        },
+        "hotelId": {
+          "type": "string",
+          "description": "Reference to the Hotel included in this holiday package. (Relationship: Hotel 1:N Holiday)"
+        },
+        "destinationId": {
+          "type": "string",
+          "description": "Reference to the Destination of this holiday package. (Relationship: Destination 1:N Holiday)"
+        },
+        "boardTypeId": {
+          "type": "string",
+          "description": "Reference to the BoardType included in this holiday package. (Relationship: BoardType 1:N Holiday)"
+        },
+        "flyingFromLocation": {
+          "type": "string",
+          "description": "The airport or city from which the holiday package departs (e.g., 'London Heathrow Airport')."
+        },
+        "guestCapacity": {
+          "type": "number",
+          "description": "The maximum number of guests that can be accommodated in this specific holiday package."
+        },
+        "holidayTypeIds": {
+          "type": "array",
+          "description": "References to the HolidayTypes this package belongs to. (Relationship: HolidayType N:N Holiday)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "A flag indicating if this holiday should be displayed in the 'Featured Holidays' section."
+        },
+        "isLastMinute": {
+          "type": "boolean",
+          "description": "A flag indicating if this holiday should be displayed in the 'Last Minute Offers' section."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "imageUrls",
+        "durationDays",
+        "pricePerPerson",
+        "startDate",
+        "endDate",
+        "rating",
+        "locationDescription",
+        "hotelId",
+        "destinationId",
+        "boardTypeId",
+        "flyingFromLocation",
+        "guestCapacity",
+        "holidayTypeIds",
+        "isFeatured",
+        "isLastMinute"
+      ]
+    },
+    "WhyBookWithUsFeature": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WhyBookWithUsFeature",
+      "type": "object",
+      "description": "Represents a feature highlighting reasons to book with Elite Escapes (e.g., ATOL Protected, Award Winning).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the WhyBookWithUsFeature entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the feature (e.g., 'ATOL Protected', 'Award Winning')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description explaining the feature."
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "URL to the icon image representing the feature.",
+          "format": "uri"
+        },
+        "order": {
+          "type": "number",
+          "description": "A numerical value indicating the display order of the feature."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "iconUrl",
+        "order"
+      ]
+    },
+    "CompanyStatistic": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CompanyStatistic",
+      "type": "object",
+      "description": "Represents a key company statistic displayed on the 'Why Book With Us' section (e.g., '2M+ Happy Customers').",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CompanyStatistic entity."
+        },
+        "metric": {
+          "type": "string",
+          "description": "The name of the statistic (e.g., 'Happy Customers', 'UK Branches')."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the statistic, including any units or symbols (e.g., '2M+', '500+')."
+        },
+        "order": {
+          "type": "number",
+          "description": "A numerical value indicating the display order of the statistic."
+        }
+      },
+      "required": [
+        "id",
+        "metric",
+        "value",
+        "order"
+      ]
+    },
+    "NewsletterSubscriber": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "NewsletterSubscriber",
+      "type": "object",
+      "description": "Stores information about users who have subscribed to the newsletter.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the NewsletterSubscriber entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the newsletter subscriber.",
+          "format": "email"
+        },
+        "subscriptionDate": {
+          "type": "string",
+          "description": "The date and time when the user subscribed to the newsletter.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "subscriptionDate"
+      ]
+    },
+    "Branch": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Branch",
+      "type": "object",
+      "description": "Represents a physical branch location of the Elite Escapes travel agency.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Branch entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the branch (e.g., 'London Flagship')."
+        },
+        "address": {
+          "type": "string",
+          "description": "The street address of the branch."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city where the branch is located."
+        },
+        "postcode": {
+          "type": "string",
+          "description": "The postal code of the branch location."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "The contact telephone number for the branch."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address for the branch.",
+          "format": "email"
+        },
+        "openingHoursDescription": {
+          "type": "string",
+          "description": "A descriptive string of the branch's opening hours (e.g., 'Mon-Fri: 9am-5pm, Sat: 10am-4pm')."
+        },
+        "mapEmbedUrl": {
+          "type": "string",
+          "description": "An optional URL for embedding a map showing the branch location.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "address",
+        "city",
+        "postcode",
+        "phoneNumber",
+        "openingHoursDescription"
+      ]
+    },
+    "SocialMediaLink": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SocialMediaLink",
+      "type": "object",
+      "description": "Represents a link to a company's social media profile for the footer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SocialMediaLink entity."
+        },
+        "platform": {
+          "type": "string",
+          "description": "The name of the social media platform (e.g., 'Facebook', 'Instagram')."
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL to the company's profile on the social media platform.",
+          "format": "uri"
+        },
+        "iconClass": {
+          "type": "string",
+          "description": "A CSS class name for the social media icon (e.g., 'fab fa-facebook-f')."
+        },
+        "order": {
+          "type": "number",
+          "description": "A numerical value indicating the display order of the social media link."
+        }
+      },
+      "required": [
+        "id",
+        "platform",
+        "url",
+        "iconClass",
+        "order"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/companyInfo/{companyInfoId}",
+        "definition": {
+          "entityName": "CompanyInfo",
+          "schema": {
+            "$ref": "#/backend/entities/CompanyInfo"
+          },
+          "description": "Stores global configuration and static company information. Expected to typically contain a single document (e.g., companyInfo/main). Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "companyInfoId",
+              "description": "The unique identifier for the company information document, typically a singleton ID like 'main' or 'config'."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/navigationItems/{navigationItemId}",
+        "definition": {
+          "entityName": "NavigationItem",
+          "schema": {
+            "$ref": "#/backend/entities/NavigationItem"
+          },
+          "description": "Represents an item in the main header navigation menu. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "navigationItemId",
+              "description": "The unique identifier for the navigation item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/trustBadges/{trustBadgeId}",
+        "definition": {
+          "entityName": "TrustBadge",
+          "schema": {
+            "$ref": "#/backend/entities/TrustBadge"
+          },
+          "description": "Represents a trust badge displayed in the hero section. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "trustBadgeId",
+              "description": "The unique identifier for the trust badge."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/destinations/{destinationId}",
+        "definition": {
+          "entityName": "Destination",
+          "schema": {
+            "$ref": "#/backend/entities/Destination"
+          },
+          "description": "Represents a geographical travel destination. Publicly readable; write access restricted to administrators. Supports queries for 'isPopular'.",
+          "params": [
+            {
+              "name": "destinationId",
+              "description": "The unique identifier for the destination."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/hotels/{hotelId}",
+        "definition": {
+          "entityName": "Hotel",
+          "schema": {
+            "$ref": "#/backend/entities/Hotel"
+          },
+          "description": "Represents a hotel where holidays can be booked. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "hotelId",
+              "description": "The unique identifier for the hotel."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/boardTypes/{boardTypeId}",
+        "definition": {
+          "entityName": "BoardType",
+          "schema": {
+            "$ref": "#/backend/entities/BoardType"
+          },
+          "description": "Defines the type of board offered as part of a holiday package. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "boardTypeId",
+              "description": "The unique identifier for the board type."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/holidayTypes/{holidayTypeId}",
+        "definition": {
+          "entityName": "HolidayType",
+          "schema": {
+            "$ref": "#/backend/entities/HolidayType"
+          },
+          "description": "Categories for different kinds of holidays. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "holidayTypeId",
+              "description": "The unique identifier for the holiday type."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/holidays/{holidayId}",
+        "definition": {
+          "entityName": "Holiday",
+          "schema": {
+            "$ref": "#/backend/entities/Holiday"
+          },
+          "description": "Represents a specific holiday package or deal offered. Publicly readable; write access restricted to administrators. Supports queries for 'isFeatured', 'isLastMinute', 'isSpecialOffer'.",
+          "params": [
+            {
+              "name": "holidayId",
+              "description": "The unique identifier for the holiday package."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/whyBookWithUsFeatures/{featureId}",
+        "definition": {
+          "entityName": "WhyBookWithUsFeature",
+          "schema": {
+            "$ref": "#/backend/entities/WhyBookWithUsFeature"
+          },
+          "description": "Represents a feature highlighting reasons to book with Elite Escapes. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "featureId",
+              "description": "The unique identifier for the 'Why Book With Us' feature."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/companyStatistics/{statisticId}",
+        "definition": {
+          "entityName": "CompanyStatistic",
+          "schema": {
+            "$ref": "#/backend/entities/CompanyStatistic"
+          },
+          "description": "Represents a key company statistic displayed. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "statisticId",
+              "description": "The unique identifier for the company statistic."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/newsletterSubscribers/{subscriberId}",
+        "definition": {
+          "entityName": "NewsletterSubscriber",
+          "schema": {
+            "$ref": "#/backend/entities/NewsletterSubscriber"
+          },
+          "description": "Stores information about users who have subscribed to the newsletter. Publicly creatable; read and delete access restricted to administrators only.",
+          "params": [
+            {
+              "name": "subscriberId",
+              "description": "The unique identifier for the newsletter subscriber."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/branches/{branchId}",
+        "definition": {
+          "entityName": "Branch",
+          "schema": {
+            "$ref": "#/backend/entities/Branch"
+          },
+          "description": "Represents a physical branch location of the travel agency. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "branchId",
+              "description": "The unique identifier for the branch location."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/socialMediaLinks/{linkId}",
+        "definition": {
+          "entityName": "SocialMediaLink",
+          "schema": {
+            "$ref": "#/backend/entities/SocialMediaLink"
+          },
+          "description": "Represents a link to a company's social media profile for the footer. Publicly readable; write access restricted to administrators.",
+          "params": [
+            {
+              "name": "linkId",
+              "description": "The unique identifier for the social media link."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{uid}",
+        "definition": {
+          "entityName": "UserRole",
+          "schema": {
+            "$ref": "#/backend/entities/UserRole"
+          },
+          "description": "A dedicated collection for Database Access Control (DBAC) to define administrators. The existence of a document with a user's UID signifies admin privileges. Used for Authorization Independence via 'exists()' checks in security rules; write access restricted to existing administrators or bootstrap processes.",
+          "params": [
+            {
+              "name": "uid",
+              "description": "The Firebase Authentication User ID of an administrator."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure for Elite Escapes prioritizes clarity, security, and scalability, aligning with the core design principles. All data entities are organized into top-level collections, reflecting their global and largely public-facing nature. The primary authorization model revolves around administrative access for content management and public read access for display data.\n\n**Authorization Independence:** This is critically achieved through two main strategies:\n1.  **Admin Role Segregation (DBAC):** Instead of embedding an 'isAdmin' flag within a user's profile document which would necessitate a 'get()' call on the user's document for every write operation, we utilize a dedicated `/roles_admin/{uid}` collection. An administrator's UID will exist as a document in this collection. Security rules can then use `exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))` to check for admin privileges. This completely eliminates hierarchical authorization dependencies for write operations and supports atomic batch writes or transactions without breaking security rules.\n2.  **Public Data with Admin Write:** For most content collections (e.g., `/holidays`, `/destinations`, `/navigationItems`), the data is designed to be publicly readable by any user (authenticated or unauthenticated). Write, update, and delete operations are strictly restricted to administrators, enforced by the `/roles_admin` check. Since public users only read, there are no complex authorization dependencies for them. There are no entities requiring multi-user collaboration or fine-grained per-document user permissions, thus removing the need for `members` maps or `ownerId` denormalization within these content documents for authorization purposes.\n\n**QAPs (Rules are not Filters):** The structure explicitly supports secure `list` operations:\n*   **Homogeneous Security Posture:** Each collection is designed with a consistent security posture. For instance, all documents in `/holidays` are publicly readable, and all documents in `/newsletterSubscribers` are publicly creatable but admin-readable. This ensures that a `list` query on any collection will only return documents that the requesting user is authorized to see, without the rules needing to act as filters.\n*   **State-based Querying:** Flags like `isFeatured`, `isLastMinute`, `isPopular` are part of the document schema. Clients query these fields directly (e.g., `db.collection('holidays').where('isFeatured', '==', true)`). The security rules simply permit reading documents that match these queries, without filtering based on the flags themselves. For `NewsletterSubscriber`, any user can `create` a document, but only admins can `list` or `read` existing subscriber documents. This clear segregation of write-vs-read permissions for this specific collection ensures QAPs.\n\nBy implementing these strategies, the Firestore design ensures that security rules are simple, explicit, and easy to debug, while providing robust authorization and supporting efficient data access patterns required by the application."
+  }
+}

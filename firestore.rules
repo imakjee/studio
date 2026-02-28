@@ -1,0 +1,236 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * ELITE ESCAPES SECURITY RULES
+     *
+     * CORE PHILOSOPHY:
+     * This ruleset implements a Role-Based Access Control (RBAC) model focused on administrative
+     * management of public travel content. Access is split between "Public/Consumer" access and
+     * "Administrator" access.
+     *
+     * DATA STRUCTURE:
+     * Data is organized into top-level collections representing travel entities (Holidays, Hotels, 
+     * Destinations, etc.). Global configuration is stored in the 'companyInfo' collection.
+     *
+     * KEY SECURITY DECISIONS:
+     * 1. Authorization Independence: Admin privileges are verified via a dedicated '/roles_admin' 
+     *    collection. This allows rules to check 'exists()' on a specific path rather than 
+     *    fetching a full user profile, improving performance and decoupling content from user data.
+     * 2. Public Readability: All travel-related content (holidays, branches, navigation) is 
+     *    publicly readable to support unauthenticated browsing by potential customers.
+     * 3. Restricted Writes: All creation, modification, and deletion of travel content is 
+     *    strictly limited to authenticated users whose UID exists in the 'roles_admin' collection.
+     * 4. Newsletter Privacy: Any user can subscribe (create), but only admins can view or 
+     *    manage the subscriber list.
+     *
+     * PROTOTYPING MODE:
+     * These rules enforce strict authorization (who can write) but remain flexible on data 
+     * structures (what is written) to facilitate rapid development.
+     */
+
+    // --- HELPER FUNCTIONS ---
+
+    /** @description Checks if the request is from a signed-in user. */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /** @description Checks if the authenticated user has a document in the roles_admin collection. */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    /** @description Combines admin check with existence check for updates and deletes. */
+    function isExistingAdmin() {
+      return isAdmin() && resource != null;
+    }
+
+    // --- COLLECTION RULES ---
+
+    /**
+     * @description Global configuration and static company information.
+     * @path /companyInfo/{companyInfoId}
+     * @allow (get) Any user requesting the 'main' config document.
+     * @deny (update) An unauthenticated user attempting to change the company logo URL.
+     * @principle Public read for UI configuration; admin-only writes.
+     */
+    match /companyInfo/{companyInfoId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Main header navigation items.
+     * @path /navigationItems/{navigationItemId}
+     * @allow (list) The frontend fetching all menu items for the navbar.
+     * @deny (create) A standard user trying to add a new link to the menu.
+     * @principle Administrative control over site navigation.
+     */
+    match /navigationItems/{navigationItemId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Trust badges (e.g., ATOL Protected) for the hero section.
+     * @path /trustBadges/{trustBadgeId}
+     * @allow (get) Publicly viewing trust credentials.
+     * @deny (delete) A non-admin attempting to remove a trust badge.
+     * @principle Admin-only management of brand trust signals.
+     */
+    match /trustBadges/{trustBadgeId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Geographical travel destinations.
+     * @path /destinations/{destinationId}
+     * @allow (list) Browsing popular destinations on the landing page.
+     * @deny (update) Changing the country name of a destination without admin rights.
+     * @principle Public catalog access with administrative content management.
+     */
+    match /destinations/{destinationId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Hotel entities linked to destinations.
+     * @path /hotels/{hotelId}
+     * @allow (get) Viewing specific hotel details and amenities.
+     * @deny (create) Submitting a new hotel entry without admin authentication.
+     * @principle Restricted write access for core travel inventory.
+     */
+    match /hotels/{hotelId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Board types (All Inclusive, etc.) for packages.
+     * @path /boardTypes/{boardTypeId}
+     * @allow (list) Fetching board options for search filters.
+     * @deny (update) Modifying a board type description.
+     * @principle Read-only access for consumers to global taxonomies.
+     */
+    match /boardTypes/{boardTypeId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Categories for holiday packages (e.g., Cruise, Beach).
+     * @path /holidayTypes/{holidayTypeId}
+     * @allow (get) Publicly viewing a category description.
+     * @deny (delete) Removing a holiday category.
+     * @principle Admin-only taxonomy management.
+     */
+    match /holidayTypes/{holidayTypeId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Specific holiday packages and deals.
+     * @path /holidays/{holidayId}
+     * @allow (list) Querying for featured holidays or special offers.
+     * @deny (update) Manually lowering the price of a holiday package via the client.
+     * @principle Protects the integrity of holiday deal pricing and availability.
+     */
+    match /holidays/{holidayId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Highlights of why to book with the agency.
+     * @path /whyBookWithUsFeatures/{featureId}
+     * @allow (list) Publicly displaying agency value propositions.
+     * @deny (create) Unauthorized user adding a new feature card.
+     * @principle Public marketing content managed by administrators.
+     */
+    match /whyBookWithUsFeatures/{featureId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Key company statistics (e.g., Happy Customers count).
+     * @path /companyStatistics/{statisticId}
+     * @allow (get) Viewing current company stats.
+     * @deny (update) Artificially inflating company metrics.
+     * @principle Only admins can update official company performance figures.
+     */
+    match /companyStatistics/{statisticId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description User newsletter subscriptions.
+     * @path /newsletterSubscribers/{subscriberId}
+     * @allow (create) An unauthenticated website visitor signing up with their email.
+     * @deny (list) A regular user or visitor attempting to see all subscriber emails.
+     * @principle Public write access for lead capture; strict admin privacy for PII.
+     */
+    match /newsletterSubscribers/{subscriberId} {
+      allow create: if true;
+      allow get, list: if isAdmin();
+      allow update: if false; // Subscribers usually don't update; they re-subscribe or unsubscribe.
+      allow delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Physical branch locations.
+     * @path /branches/{branchId}
+     * @allow (get) Finding the address of the nearest branch.
+     * @deny (update) Changing the phone number of a branch.
+     * @principle Public store locator with administrative control.
+     */
+    match /branches/{branchId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Links to social media profiles.
+     * @path /socialMediaLinks/{linkId}
+     * @allow (list) Displaying social icons in the site footer.
+     * @deny (delete) Removing the company's Instagram link.
+     * @principle Admin-managed social integration.
+     */
+    match /socialMediaLinks/{linkId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isExistingAdmin();
+    }
+
+    /**
+     * @description Registry of administrative users (Database Access Control).
+     * @path /roles_admin/{uid}
+     * @allow (get) An admin checking their own or another user's admin status.
+     * @deny (create) A non-admin attempting to grant themselves administrative rights.
+     * @principle Self-contained authorization registry. Only existing admins can manage admins.
+     */
+    match /roles_admin/{uid} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isExistingAdmin();
+      allow delete: if isExistingAdmin();
+    }
+  }
+}
