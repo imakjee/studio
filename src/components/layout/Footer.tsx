@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, Lock, Globe, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy, limit } from 'firebase/firestore';
+import { collection, query, limit } from 'firebase/firestore';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { STATIC_FOOTER_NAV } from '@/lib/navigation-static';
 
@@ -44,10 +44,10 @@ export default function Footer() {
   const [isAtolExpanded, setIsAtolExpanded] = useState(false);
   const db = useFirestore();
 
+  // Fetch all navigation items to avoid composite index requirements (filter/sort in memory)
   const navQuery = useMemoFirebase(() => query(
-    collection(db, 'navigationItems'), 
-    orderBy('order', 'asc'),
-    limit(20)
+    collection(db, 'navigationItems'),
+    limit(50)
   ), [db]);
   const { data: allNavItems } = useCollection(navQuery);
 
@@ -87,7 +87,9 @@ export default function Footer() {
           <div className="md:hidden space-y-2 border-t border-white/10 pt-8">
             <Accordion type="multiple" className="w-full">
               {FOOTER_GROUPS.map((group) => {
-                const dynamicItems = allNavItems?.filter(item => item.group === group.id) || [];
+                const dynamicItems = allNavItems
+                  ?.filter(item => item.group === group.id)
+                  ?.sort((a, b) => (a.order || 0) - (b.order || 0)) || [];
                 const items = dynamicItems.length ? dynamicItems : STATIC_FOOTER_NAV[group.id as keyof typeof STATIC_FOOTER_NAV] || [];
                 
                 return (
@@ -114,7 +116,9 @@ export default function Footer() {
 
           <div className="hidden md:grid md:grid-cols-2 lg:contents gap-10 lg:gap-4 lg:col-span-4">
             {FOOTER_GROUPS.map((group) => {
-              const dynamicItems = allNavItems?.filter(item => item.group === group.id) || [];
+              const dynamicItems = allNavItems
+                ?.filter(item => item.group === group.id)
+                ?.sort((a, b) => (a.order || 0) - (b.order || 0)) || [];
               const items = dynamicItems.length ? dynamicItems : STATIC_FOOTER_NAV[group.id as keyof typeof STATIC_FOOTER_NAV] || [];
               
               return (

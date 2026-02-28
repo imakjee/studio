@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Phone, Menu, ChevronDown, Palmtree, Ship, Building2, Star, Compass, ArrowRight } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
-import { doc, collection, query, where, limit, orderBy } from 'firebase/firestore';
+import { doc, collection, query, limit } from 'firebase/firestore';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { STATIC_NAV_ITEMS } from '@/lib/navigation-static';
@@ -26,20 +26,28 @@ export default function MainHeader() {
   const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // We fetch dynamic items but use static ones as primary to ensure instant load
+  // Fetch all navigation items to avoid composite index requirements (filter/sort in memory)
   const navQuery = useMemoFirebase(() => query(
-    collection(db, 'navigationItems'), 
-    where('group', '==', 'mainHeader'),
-    orderBy('order', 'asc'),
-    limit(10)
+    collection(db, 'navigationItems'),
+    limit(50)
   ), [db]);
-  const { data: dynamicNavItems } = useCollection(navQuery);
+  const { data: allNavItems } = useCollection(navQuery);
   
-  // Use dynamic items if they exist, otherwise use static fallback
-  const navItems = dynamicNavItems?.length ? dynamicNavItems : STATIC_NAV_ITEMS;
+  // Use dynamic items filtered and sorted in memory, fallback to static if empty
+  const navItems = useMemo(() => {
+    const dynamicItems = allNavItems
+      ?.filter(item => item.group === 'mainHeader')
+      ?.sort((a, b) => (a.order || 0) - (b.order || 0))
+      || [];
+    return dynamicItems.length ? dynamicItems : STATIC_NAV_ITEMS;
+  }, [allNavItems]);
 
-  const destQuery = useMemoFirebase(() => query(collection(db, 'destinations'), where('isPopular', '==', true), limit(4)), [db]);
-  const { data: popularDests } = useCollection(destQuery);
+  const destQuery = useMemoFirebase(() => query(collection(db, 'destinations'), limit(20)), [db]);
+  const { data: allDests } = useCollection(destQuery);
+  
+  const popularDests = useMemo(() => {
+    return allDests?.filter(d => d.isPopular).slice(0, 4) || [];
+  }, [allDests]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
