@@ -5,7 +5,7 @@ import { collection, deleteDoc, doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2, Plus, Star, MapPin, Search } from 'lucide-react';
+import { Edit, Trash2, Plus, Star, MapPin, Search, Download } from 'lucide-react';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
@@ -30,6 +30,21 @@ export default function HolidaysAdminPage() {
     }
   };
 
+  const handleExportData = () => {
+    if (!holidays || holidays.length === 0) {
+      toast({ variant: "destructive", title: "No Data", description: "There is no data to export." });
+      return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(holidays, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "tailor_travels_holidays.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+    toast({ title: "Export Started", description: "Your holiday data is downloading." });
+  };
+
   const filteredHolidays = holidays?.filter(h => 
     h.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
     h.location?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -47,12 +62,22 @@ export default function HolidaysAdminPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Link href="/admin/holidays/new">
-          <Button className="bg-accent hover:bg-accent/90 text-white font-bold h-11 rounded-xl shadow-lg shadow-accent/20">
-            <Plus className="w-4 h-4 mr-2" />
-            Add New Holiday
+        <div className="flex gap-3 w-full sm:w-auto">
+          <Button 
+            onClick={handleExportData}
+            variant="outline" 
+            className="bg-white hover:bg-muted text-primary font-bold h-11 rounded-xl border-primary/20"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export JSON
           </Button>
-        </Link>
+          <Link href="/admin/holidays/new">
+            <Button className="bg-accent hover:bg-accent/90 text-white font-bold h-11 rounded-xl shadow-lg shadow-accent/20">
+              <Plus className="w-4 h-4 mr-2" />
+              Add New Holiday
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-[32px] shadow-sm overflow-hidden border border-border/40">

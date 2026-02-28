@@ -7,7 +7,10 @@ import {
   TrendingUp, 
   MapPinned,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Rocket,
+  ShieldCheck,
+  Download
 } from 'lucide-react';
 import { 
   Bar, 
@@ -20,6 +23,8 @@ import {
 } from 'recharts';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const CHART_DATA = [
   { name: 'Jan', value: 400 },
@@ -71,40 +76,81 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Card className="lg:col-span-2 border-none shadow-sm rounded-3xl">
-          <CardHeader>
-            <CardTitle className="text-lg font-headline font-bold">Booking Trends (2024)</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[300px] pl-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={CHART_DATA}>
-                <XAxis 
-                  dataKey="name" 
-                  stroke="#888888" 
-                  fontSize={12} 
-                  tickLine={false} 
-                  axisLine={false} 
-                />
-                <YAxis
-                  stroke="#888888"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => `£${value}`}
-                />
-                <Tooltip 
-                  cursor={{fill: 'transparent'}}
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
-                />
-                <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                  {CHART_DATA.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === CHART_DATA.length - 1 ? '#F4A825' : '#054452'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        <div className="lg:col-span-2 space-y-8">
+          <Card className="border-none shadow-sm rounded-3xl">
+            <CardHeader>
+              <CardTitle className="text-lg font-headline font-bold">Booking Trends (2024)</CardTitle>
+            </CardHeader>
+            <CardContent className="h-[300px] pl-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={CHART_DATA}>
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="#888888" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    axisLine={false} 
+                  />
+                  <YAxis
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `£${value}`}
+                  />
+                  <Tooltip 
+                    cursor={{fill: 'transparent'}}
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                  />
+                  <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                    {CHART_DATA.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={index === CHART_DATA.length - 1 ? '#F4A825' : '#054452'} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Deployment Guide Card */}
+          <Card className="border-none shadow-xl rounded-[40px] bg-gradient-to-br from-primary to-[#0b3d44] text-white overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+            <CardHeader>
+              <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-2">
+                <Rocket className="w-6 h-6 text-accent" />
+              </div>
+              <CardTitle className="text-2xl font-headline font-bold">Go Live Guide</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <p className="font-bold text-accent uppercase tracking-widest text-[10px]">Step 1: Download Code</p>
+                  <p className="text-sm text-white/70 leading-relaxed">
+                    Use the <strong>"Export"</strong> button in the Firebase Studio top menu to download your project ZIP file.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p className="font-bold text-accent uppercase tracking-widest text-[10px]">Step 2: Deploy</p>
+                  <p className="text-sm text-white/70 leading-relaxed">
+                    Click the <strong>Firebase Icon</strong> in the sidebar and select <strong>"Deploy to Hosting"</strong> to make it live.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-4 border-t border-white/10">
+                <div className="flex items-center gap-3 mb-4">
+                  <ShieldCheck className="w-5 h-5 text-green-400" />
+                  <span className="text-sm font-medium">Your site is optimized for production.</span>
+                </div>
+                <Link href="/admin/holidays">
+                  <Button className="bg-accent hover:bg-accent/90 text-white font-bold h-12 px-8 rounded-xl shadow-lg shadow-accent/20">
+                    <Download className="w-4 h-4 mr-2" />
+                    Manage & Export Data
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <Card className="border-none shadow-sm rounded-3xl">
           <CardHeader>
@@ -117,8 +163,8 @@ export default function AdminDashboard() {
                   <div className="w-2 h-2 rounded-full bg-accent mt-2 shrink-0" />
                   <div>
                     <p className="text-sm font-bold text-primary">New Holiday Added</p>
-                    <p className="text-xs text-muted-foreground">Ozen Reserve Bolifushi updated by John</p>
-                    <p className="text-[10px] text-muted-foreground mt-1 uppercase font-bold tracking-wider">2 hours ago</p>
+                    <p className="text-xs text-muted-foreground">Bespoke package updated by System</p>
+                    <p className="text-[10px] text-muted-foreground mt-1 uppercase font-bold tracking-wider">Recent</p>
                   </div>
                 </div>
               ))}
