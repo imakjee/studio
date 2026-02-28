@@ -1,108 +1,93 @@
 rules_version = '2';
+
+/**
+ * FIREBASE SECURITY RULES DOCUMENTATION
+ * 
+ * Core Philosophy:
+ * This ruleset implements a "Public Catalog, Private Subscriptions" model for Elite Escapes. 
+ * Marketing content (Destinations and Holidays) is globally readable to facilitate 
+ * browsing without authentication. User-generated data (Newsletter Subscriptions) 
+ * follows a "write-only" pattern for end-users to protect privacy.
+ * 
+ * Data Structure:
+ * - /destinations/{destinationId}: Top-level public collection for travel locations.
+ * - /holidays/{holidayId}: Top-level public collection for travel packages.
+ * - /newsletterSubscribers/{subscriberId}: Collection for email leads.
+ * 
+ * Key Security Decisions:
+ * - Public Content: Read access is open to all for Destinations and Holidays.
+ * - Restricted Writes: Writes to the catalog are blocked as the current schema 
+ *   lacks ownership fields (e.g., adminId). This prevents unauthorized content modification.
+ * - Subscriber Privacy: Any authenticated user (including anonymous) can subscribe, 
+ *   but they cannot read back, update, or delete any subscription data.
+ * - Admin Role: Read/Update/Delete access for subscribers is reserved for a future 
+ *   administrative role.
+ * 
+ * Denormalization for Authorization:
+ * - The NewsletterSubscriber entity uses the document ID as a relational link to 
+ *   the internal 'id' field to ensure path-to-data consistency.
+ */
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    /**
-     * ELITE ESCAPES SECURITY RULES
-     *
-     * Core Philosophy:
-     * This ruleset implements a Public Content / Private Submission model.
-     * Content entities (Packages, Destinations, Branches) are optimized for high-performance
-     * public browsing (Query as Permission), while user-submitted data (Newsletter)
-     * is protected for privacy.
-     *
-     * Data Structure:
-     * - /holiday_packages: Public travel deals.
-     * - /destinations: Public geographical info.
-     * - /branch_locations: Public office locations.
-     * - /newsletter_subscribers: User-submitted subscriptions (Anonymous Create).
-     *
-     * Key Security Decisions:
-     * - Public Read: Standard for travel marketplaces to ensure SEO and ease of access.
-     * - Admin Writes: All content modifications are restricted to administrative
-     *   backends (represented here as `if false` until admin roles are defined).
-     * - Anonymous Submission: Newsletter sign-ups are allowed for any authenticated
-     *   user (including Firebase Anonymous Auth) but cannot be read back by the user.
-     *
-     * Denormalization for Authorization:
-     * - This architecture uses QAP (Query as Permission). Flags like 'isFeatured'
-     *   and 'isPopular' are embedded in documents to allow simple listing without
-     *   complex join-style security checks.
-     */
+    // --- GLOBAL HELPER FUNCTIONS ---
 
     /**
-     * STEP 1: IR ANALYSIS & SYNTHESIS
-     * 1. HolidayPackage: Public Read / Restricted Write.
-     *    - No ownership field present. Admin-only writes.
-     * 2. Destination: Public Read / Restricted Write.
-     *    - No ownership field present. Admin-only writes.
-     * 3. BranchLocation: Public Read / Restricted Write.
-     *    - No ownership field present. Admin-only writes.
-     * 4. NewsletterSubscriber: Self-Creation (Anonymous).
-     *    - Restricted Reads/Updates/Deletes to protect subscriber privacy.
-     */
-
-    // --- Helper Functions ---
-
-    /**
-     * @description Checks if the request is from an authenticated user.
+     * @description Checks if the request is from an authenticated user (including anonymous).
      */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    // --- Collection Rules ---
-
     /**
-     * @description Publicly accessible holiday packages for browsing and filtering.
-     * @path /holiday_packages/{holidayPackageId}
-     * @allow (get, list) for any user.
-     * @deny (create, update, delete) for any non-admin user.
-     * @principle Public read access for marketing content with strictly controlled writes.
+     * @description Placeholder for administrative access logic. 
+     * Defaults to false until a specific admin role or custom claim is implemented.
      */
-    match /holiday_packages/{holidayPackageId} {
-      allow get, list: if true;
-      // CRITICAL: Cannot implement owner-only writes. The 'HolidayPackage' entity is missing an 'ownerId' or 'authorId' field.
-      allow create, update, delete: if false; // TODO: Add administrative role check once admin schema is defined.
+    function isAdmin() {
+      return false; 
     }
 
+    // --- COLLECTION RULES ---
+
     /**
-     * @description Publicly accessible destination information.
+     * @description Publicly accessible collection of travel destinations.
      * @path /destinations/{destinationId}
-     * @allow (get, list) for any user.
-     * @deny (create, update, delete) for any non-admin user.
-     * @principle Public read access for marketing content with strictly controlled writes.
+     * @allow get (all), list (all)
+     * @deny create, update, delete (all - missing ownership context)
+     * @principle Public Read with Owner-Only Writes (Writes currently disabled for safety).
      */
     match /destinations/{destinationId} {
       allow get, list: if true;
       // CRITICAL: Cannot implement owner-only writes. The 'Destination' entity is missing an 'ownerId' or 'authorId' field.
-      allow create, update, delete: if false; // TODO: Add administrative role check once admin schema is defined.
+      allow create, update, delete: if false; // TODO: Add admin/owner validation once the schema is updated.
     }
 
     /**
-     * @description Publicly accessible physical branch locations.
-     * @path /branch_locations/{branchLocationId}
-     * @allow (get, list) for any user.
-     * @deny (create, update, delete) for any non-admin user.
-     * @principle Public read access for support info with strictly controlled writes.
+     * @description Publicly accessible collection of holiday packages.
+     * @path /holidays/{holidayId}
+     * @allow get (all), list (all)
+     * @deny create, update, delete (all - missing ownership context)
+     * @principle Public Read with Owner-Only Writes (Writes currently disabled for safety).
      */
-    match /branch_locations/{branchLocationId} {
+    match /holidays/{holidayId} {
       allow get, list: if true;
-      // CRITICAL: Cannot implement owner-only writes. The 'BranchLocation' entity is missing an 'ownerId' or 'authorId' field.
-      allow create, update, delete: if false; // TODO: Add administrative role check once admin schema is defined.
+      // CRITICAL: Cannot implement owner-only writes. The 'Holiday' entity is missing an 'ownerId' or 'authorId' field.
+      allow create, update, delete: if false; // TODO: Add admin/owner validation once the schema is updated.
     }
 
     /**
-     * @description Secure collection for newsletter signups.
-     * @path /newsletter_subscribers/{subscriberId}
-     * @allow (create) for any signed-in user (including anonymous).
-     * @deny (get, list, update, delete) to prevent unauthorized access to the email list.
-     * @principle Anonymous write-only pattern to protect user privacy while allowing lead capture.
+     * @description Collection for newsletter subscriptions. Allows creation by any user but restricts reading to admins.
+     * @path /newsletterSubscribers/{subscriberId}
+     * @allow create (any signed-in/anon user), get/list/update/delete (admin only)
+     * @deny get/list/update/delete (standard users)
+     * @principle Restricted shared access with relational integrity validation.
      */
-    match /newsletter_subscribers/{subscriberId} {
-      allow get, list: if false;
-      allow create: if isSignedIn();
-      allow update, delete: if false;
+    match /newsletterSubscribers/{subscriberId} {
+      allow get, list: if isAdmin();
+      allow create: if isSignedIn() && request.resource.data.id == subscriberId;
+      allow update: if resource != null && isAdmin() && request.resource.data.id == resource.data.id;
+      allow delete: if resource != null && isAdmin();
     }
   }
 }
