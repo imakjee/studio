@@ -24,6 +24,16 @@ const OFFERS = [
     newPrice: '899',
     save: '300',
     date: 'Sep 28, 2024'
+  },
+  {
+    id: 3,
+    image: PlaceHolderImages.find(img => img.id === 'dubai-skyline'),
+    hotel: 'Atlantis The Royal',
+    location: 'Palm Jumeirah, Dubai',
+    oldPrice: '1,499',
+    newPrice: '1,199',
+    save: '300',
+    date: 'Nov 05, 2024'
   }
 ];
 
@@ -45,10 +55,10 @@ export default function LastMinuteOffers() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {OFFERS.map((offer) => (
-            <div key={offer.id} className="bg-white rounded-2xl p-4 md:p-6 flex flex-col md:flex-row gap-6 shadow-2xl items-center md:items-stretch">
-              <div className="relative w-full md:w-56 h-48 rounded-xl overflow-hidden shrink-0">
+            <div key={offer.id} className="bg-white rounded-2xl p-4 md:p-6 flex flex-col gap-6 shadow-2xl">
+              <div className="relative w-full h-56 rounded-xl overflow-hidden shrink-0">
                 {offer.image && (
                   <Image 
                     src={offer.image.imageUrl} 
@@ -58,35 +68,33 @@ export default function LastMinuteOffers() {
                     data-ai-hint={offer.image.imageHint}
                   />
                 )}
-                <Badge className="absolute top-2 left-2 bg-accent text-white font-bold">Save £{offer.save}</Badge>
+                <Badge className="absolute top-3 left-3 bg-accent text-white font-bold px-3 py-1 shadow-lg">Save £{offer.save}</Badge>
               </div>
               
               <div className="flex flex-col flex-1 justify-between py-2 w-full">
                 <div>
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-headline text-xl font-bold text-primary leading-tight">{offer.hotel}</h3>
-                    <div className="flex gap-0.5">
-                      <Star className="w-3 h-3 fill-accent text-accent" />
-                      <Star className="w-3 h-3 fill-accent text-accent" />
-                      <Star className="w-3 h-3 fill-accent text-accent" />
-                      <Star className="w-3 h-3 fill-accent text-accent" />
-                      <Star className="w-3 h-3 fill-accent text-accent" />
+                    <div className="flex gap-0.5 shrink-0">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-accent text-accent" />
+                      ))}
                     </div>
                   </div>
                   <p className="text-muted-foreground text-sm font-medium mb-4">{offer.location}</p>
                   
-                  <div className="flex items-center gap-2 text-primary/60 text-sm font-semibold mb-4 bg-background px-3 py-1.5 rounded-lg inline-flex">
+                  <div className="flex items-center gap-2 text-primary/60 text-sm font-semibold mb-4 bg-muted/50 px-3 py-1.5 rounded-lg inline-flex">
                     <Clock className="w-4 h-4" />
                     Departs: {offer.date}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/40">
                   <div>
                     <span className="block text-xs text-muted-foreground line-through decoration-destructive/50">Was £{offer.oldPrice}</span>
                     <span className="text-3xl font-bold text-primary">£{offer.newPrice}</span>
                   </div>
-                  <Button className="bg-accent hover:bg-accent/90 text-white font-bold px-8 h-12 rounded-xl shadow-lg shadow-accent/20">
+                  <Button className="bg-accent hover:bg-accent/90 text-white font-bold px-6 h-12 rounded-xl shadow-lg shadow-accent/20 transition-transform active:scale-95">
                     View Deal
                   </Button>
                 </div>
