@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,20 @@ import { MapPin, Calendar, Plane, Users, Search } from 'lucide-react';
 
 export default function SearchBox() {
   const [activeTab, setActiveTab] = useState("holidays");
+  const [destination, setDestination] = useState("");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    // Navigate based on selected tab and search term
+    if (activeTab === "holidays") {
+      const query = destination.trim() ? `?q=${encodeURIComponent(destination.trim())}` : '';
+      router.push(`/holidays${query}`);
+    } else if (activeTab === "cruises") {
+      router.push(`/cruises`);
+    } else if (activeTab === "deals") {
+      router.push(`/deals`);
+    }
+  };
 
   return (
     <div className="bg-white rounded-2xl shadow-2xl p-2 md:p-6 w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -40,7 +55,13 @@ export default function SearchBox() {
             <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 ml-1">
               <MapPin className="w-3 h-3" /> Where to?
             </Label>
-            <Input placeholder="Anywhere" className="bg-background border-none h-12 rounded-xl focus-visible:ring-primary" />
+            <Input 
+              placeholder="Anywhere" 
+              className="bg-background border-none h-12 rounded-xl focus-visible:ring-primary" 
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            />
           </div>
           
           <div className="space-y-1.5 md:col-span-1">
@@ -64,7 +85,10 @@ export default function SearchBox() {
             <Input placeholder="2 Adults" className="bg-background border-none h-12 rounded-xl focus-visible:ring-primary" />
           </div>
 
-          <Button className="bg-accent hover:bg-accent/90 text-white h-12 rounded-xl font-bold flex items-center gap-2 w-full transition-transform active:scale-95 shadow-lg shadow-accent/20">
+          <Button 
+            onClick={handleSearch}
+            className="bg-accent hover:bg-accent/90 text-white h-12 rounded-xl font-bold flex items-center gap-2 w-full transition-transform active:scale-95 shadow-lg shadow-accent/20"
+          >
             <Search className="w-4 h-4" />
             SEARCH
           </Button>
