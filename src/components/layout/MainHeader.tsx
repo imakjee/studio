@@ -1,22 +1,23 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Phone } from 'lucide-react';
+import { Phone, Menu } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const NAV_ITEMS = [
-  { label: 'Holidays', href: '#' },
-  { label: 'Cruises', href: '#' },
-  { label: 'Deals', href: '#' },
-  { label: 'Find a Branch', href: '#' },
-  { label: 'About Us', href: '#' },
+  { label: 'Holidays', href: '/holidays' },
+  { label: 'Cruises', href: '/cruises' },
+  { label: 'Deals', href: '/deals' },
+  { label: 'Find a Branch', href: '/branches' },
+  { label: 'About Us', href: '/about' },
 ];
 
 export default function MainHeader() {
   return (
     <header className="bg-white border-b shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center group-hover:bg-accent transition-colors">
             <span className="text-white font-headline text-xl font-bold italic">E</span>
           </div>
           <span className="font-headline text-xl font-bold tracking-tight text-primary uppercase">
@@ -24,12 +25,13 @@ export default function MainHeader() {
           </span>
         </Link>
 
+        {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
             >
               {item.label}
             </Link>
@@ -37,13 +39,45 @@ export default function MainHeader() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Button variant="outline" className="hidden sm:flex border-primary text-primary hover:bg-primary/5">
-            Get a Quote
-          </Button>
-          <Button className="bg-accent hover:bg-accent/90 text-white font-medium flex items-center gap-2 px-6">
+          <Link href="/contact" className="hidden sm:block">
+            <Button variant="outline" className="border-primary text-primary hover:bg-primary/5">
+              Get a Quote
+            </Button>
+          </Link>
+          <Button className="bg-accent hover:bg-accent/90 text-white font-bold flex items-center gap-2 px-6 shadow-lg shadow-accent/20">
             <Phone className="w-4 h-4" />
-            Call Us
+            <span className="hidden xs:inline">0800 123 4567</span>
+            <span className="xs:hidden">Call</span>
           </Button>
+
+          {/* Mobile Menu */}
+          <div className="lg:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-primary">
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px]">
+                <div className="flex flex-col gap-6 mt-10">
+                  {NAV_ITEMS.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="text-lg font-bold text-primary hover:text-accent transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                  <Link href="/contact" className="w-full">
+                    <Button variant="outline" className="w-full border-primary text-primary">
+                      Get a Quote
+                    </Button>
+                  </Link>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

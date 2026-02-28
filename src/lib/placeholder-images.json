@@ -41,6 +41,18 @@
       "description": "Times Square New York",
       "imageUrl": "https://images.unsplash.com/photo-1496588152823-86ff7695e68f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxuZXclMjB5b3JrJTIwY2l0eXxlbnwwfHx8fDE3NzIyMTgwMzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "new york city"
+    },
+    {
+      "id": "cruise-ship",
+      "description": "Luxury cruise ship at sea",
+      "imageUrl": "https://images.unsplash.com/photo-1548574505-5e239809ee19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjcnVpc2UlMjBzaGlwfGVufDB8fHx8MTc3MjI3Nzc5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cruise ship"
+    },
+    {
+      "id": "barcelona-city",
+      "description": "Sagrada Familia in Barcelona",
+      "imageUrl": "https://images.unsplash.com/photo-1583422409516-2919d7a1cd1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYXJjZWxvbmF8ZW58MHx8fHwxNzcyMjc3Nzk1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "barcelona city"
     }
   ]
 }
