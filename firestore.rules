@@ -1,9 +1,9 @@
 rules_version = '2';
 
 /**
- * TAILOR TRAVELS - FIRESTORE SECURITY RULES
- * Updated to ensure all CMS content is publicly accessible for dynamic site generation.
- * Connectivity Fix Trigger: February 2026
+ * ELITE ESCAPES - FIRESTORE SECURITY RULES
+ * Optimized for dynamic content fetching and administrative control.
+ * Trigger Update: February 2026 - Performance Patch
  */
 
 service cloud.firestore {
@@ -25,7 +25,7 @@ service cloud.firestore {
 
     // --- COLLECTION RULES ---
 
-    // Publicly readable collections (CMS Content)
+    // CMS Content - Publicly readable
     match /holidays/{holidayId} {
       allow get, list: if true;
       allow create: if isAdmin();
@@ -68,23 +68,21 @@ service cloud.firestore {
       allow update, delete: if isExistingAdmin();
     }
 
-    // Special case: Company Info is a singleton document
+    // Company Info - Singleton
     match /companyInfo/{documentId} {
       allow get, list: if true;
       allow create: if isAdmin();
       allow update, delete: if isExistingAdmin();
     }
 
-    // Private collection: Newsletter Subscribers
+    // Newsletter - Public create, Admin read
     match /newsletterSubscribers/{subscriberId} {
       allow create: if true;
       allow get, list: if isAdmin();
       allow update, delete: if isExistingAdmin();
     }
 
-    /**
-     * @description Rules for Administrative Role management.
-     */
+    // Admin Roles (DBAC)
     match /roles_admin/{userId} {
       allow get: if isSignedIn() && request.auth.uid == userId;
       allow create: if isSignedIn() && request.auth.uid == userId;
