@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, Lock, Globe, Mail, Phone } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, Lock, Globe } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const FOOTER_COLUMNS = [
@@ -47,6 +47,30 @@ const FOOTER_COLUMNS = [
   },
 ];
 
+const TRUST_ITEMS = [
+  {
+    icon: ShieldCheck,
+    label: 'ATOL Protected',
+    color: 'text-green-500',
+    borderColor: 'border-green-500/30',
+    bgColor: 'bg-green-500/10'
+  },
+  {
+    icon: Globe,
+    label: 'ABTA Member',
+    color: 'text-blue-500',
+    borderColor: 'border-blue-500/30',
+    bgColor: 'bg-blue-500/10'
+  },
+  {
+    icon: Lock,
+    label: 'Secure Payments',
+    color: 'text-purple-500',
+    borderColor: 'border-purple-500/30',
+    bgColor: 'bg-purple-500/10'
+  }
+];
+
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
 
@@ -55,21 +79,13 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#0A0A0B] text-white w-full border-t border-white/5">
+    <footer className="bg-[#050505] text-white w-full">
       <div className="container mx-auto px-4 py-16">
         {/* Section 1 — Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2 mb-6 group">
-              <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                <span className="text-white font-headline text-xl font-bold italic">E</span>
-              </div>
-              <span className="font-headline text-2xl font-bold tracking-tight text-white uppercase">
-                Elite<span className="text-accent">Escapes</span>
-              </span>
-            </Link>
-            <p className="text-white/60 mb-8 max-w-xs leading-relaxed text-sm">
-              Your trusted travel partner. ATOL protected and award-winning service curated for the extraordinary.
+            <p className="text-white/80 mb-8 max-w-[240px] leading-relaxed text-sm">
+              Your trusted travel partner. ATOL protected and award-winning service.
             </p>
             <div className="flex items-center gap-3">
               {[
@@ -81,7 +97,7 @@ export default function Footer() {
                 <Link 
                   key={i} 
                   href={href} 
-                  className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:border-accent transition-all duration-300"
+                  className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center hover:opacity-90 transition-all duration-300"
                 >
                   <Icon className="w-5 h-5 text-white" />
                 </Link>
@@ -91,11 +107,11 @@ export default function Footer() {
 
           {FOOTER_COLUMNS.map((group) => (
             <div key={group.title} className="lg:col-span-1">
-              <h4 className="font-bold mb-6 text-sm uppercase tracking-wider text-white/90">{group.title}</h4>
+              <h4 className="font-bold mb-6 text-base text-white">{group.title}</h4>
               <ul className="space-y-4">
                 {group.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-white/50 hover:text-accent transition-colors text-sm font-medium">
+                    <Link href={link.href} className="text-white/60 hover:text-white transition-colors text-sm">
                       {link.label}
                     </Link>
                   </li>
@@ -106,50 +122,29 @@ export default function Footer() {
         </div>
 
         {/* Section 2 — Trust Row */}
-        <div className="border-y border-white/5 py-10 mb-10">
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center">
-            <div className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/5 transition-colors">
-                <ShieldCheck className="w-6 h-6 text-accent" />
+        <div className="border-y border-white/10 py-10 mb-10">
+          <div className="flex flex-wrap justify-center gap-12 md:gap-24 items-center">
+            {TRUST_ITEMS.map((item, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-full border-2 ${item.borderColor} ${item.bgColor} flex items-center justify-center`}>
+                  <item.icon className={`w-6 h-6 ${item.color}`} />
+                </div>
+                <span className="text-sm font-bold text-white tracking-wide">{item.label}</span>
               </div>
-              <div className="flex flex-col">
-                <span className="text-xs font-bold uppercase tracking-widest text-white/90">ATOL Protected</span>
-                <span className="text-[10px] text-white/40">Financial protection for your trip</span>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/5 transition-colors">
-                <Globe className="w-6 h-6 text-accent" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs font-bold uppercase tracking-widest text-white/90">ABTA Member</span>
-                <span className="text-[10px] text-white/40">Registered: Elite Escapes Ltd</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/5 transition-colors">
-                <Lock className="w-6 h-6 text-accent" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs font-bold uppercase tracking-widest text-white/90">Secure Payments</span>
-                <span className="text-[10px] text-white/40">PCI-DSS Level 1 Encrypted</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
         {/* Section 3 — Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-white/40 text-sm">
-            © {currentYear ?? '...'} Elite Escapes. All rights reserved.
+            © {currentYear ?? '2024'} Elite Escapes. All rights reserved.
           </div>
           
-          <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-white/40 text-xs font-medium uppercase tracking-wider">
-            <Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-accent transition-colors">Terms of Service</Link>
-            <Link href="/cookies" className="hover:text-accent transition-colors">Cookie Policy</Link>
+          <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-white/40 text-sm">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>
