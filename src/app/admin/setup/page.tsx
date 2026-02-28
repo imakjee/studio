@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserPlus, ShieldCheck, Zap } from 'lucide-react';
+import { UserPlus, ShieldCheck, Zap, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminSetupPage() {
@@ -34,38 +34,45 @@ export default function AdminSetupPage() {
 
     setLoading(true);
     try {
-      // 1. Create the user in Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, finalEmail, finalPass);
-      const user = userCredential.user;
+      let user;
+      try {
+        // 1. Try to create the user in Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, finalEmail, finalPass);
+        user = userCredential.user;
+      } catch (authError: any) {
+        // 2. If user already exists, try signing in to get the UID
+        if (authError.code === 'auth/email-already-in-use') {
+          const userCredential = await signInWithEmailAndPassword(auth, finalEmail, finalPass);
+          user = userCredential.user;
+        } else {
+          throw authError;
+        }
+      }
 
-      // 2. Grant admin role in Firestore
+      // 3. Grant admin role in Firestore (DBAC)
+      // This ensures even if the user existed, they definitely have the admin role now
       await setDoc(doc(db, 'roles_admin', user.uid), {
         role: 'admin',
         email: user.email,
-        createdAt: serverTimestamp(),
-      });
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
 
       toast({ 
-        title: "Admin Created!", 
-        description: "Your account is now ready. Redirecting to login..." 
+        title: "Admin Ready!", 
+        description: "Your account is active. Redirecting to login..." 
       });
       
-      setTimeout(() => router.push('/admin/login'), 2000);
+      // Delay slightly so toast is visible
+      setTimeout(() => {
+        router.push('/admin/login');
+      }, 1500);
+
     } catch (error: any) {
-      // If user already exists, maybe they just need the role?
-      if (error.code === 'auth/email-already-in-use') {
-        toast({
-          variant: "destructive",
-          title: "Account exists",
-          description: "This email is already registered. Try logging in or use a different email.",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Setup Failed",
-          description: error.message || "Something went wrong during setup.",
-        });
-      }
+      toast({
+        variant: "destructive",
+        title: "Setup Failed",
+        description: error.message || "Something went wrong during setup.",
+      });
     } finally {
       setLoading(false);
     }
@@ -94,14 +101,15 @@ export default function AdminSetupPage() {
               <Zap className="w-4 h-4" /> Quick Start
             </div>
             <p className="text-xs text-muted-foreground mb-4">
-              Click below to create a default admin account instantly for testing.
+              Click below to create or repair the default admin account instantly.
             </p>
             <Button 
               onClick={handleQuickSetup} 
               disabled={loading}
               className="w-full bg-accent hover:bg-accent/90 text-white font-bold h-12 rounded-2xl shadow-lg shadow-accent/20"
             >
-              Quick Create: admin@eliteescapes.co.uk
+              {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              Quick Setup: admin@eliteescapes.co.uk
             </Button>
           </div>
 
@@ -136,7 +144,7 @@ export default function AdminSetupPage() {
               />
             </div>
             <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 h-12 rounded-2xl font-bold">
-              {loading ? "Creating Account..." : "Create Custom Account"}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : "Create Custom Account"}
             </Button>
           </form>
         </CardContent>
