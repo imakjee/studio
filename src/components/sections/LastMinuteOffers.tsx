@@ -12,7 +12,11 @@ export default function LastMinuteOffers() {
   const db = useFirestore();
   
   const offersQuery = useMemoFirebase(() => 
-    query(collection(db, 'holidays'), where('isLastMinuteOffer', '==', true), limit(3)), 
+    query(
+      collection(db, 'holidays'), 
+      where('isLastMinuteOffer', '==', true), 
+      limit(3) // PRODUCTION: Limit result set for faster page rendering
+    ), 
   [db]);
 
   const { data: offers, isLoading } = useCollection(offersQuery);
@@ -54,6 +58,7 @@ export default function LastMinuteOffers() {
                     alt={offer.name} 
                     fill 
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <Badge className="absolute top-3 left-3 bg-accent text-white font-bold px-3 py-1 shadow-lg">Special Offer</Badge>
                 </div>

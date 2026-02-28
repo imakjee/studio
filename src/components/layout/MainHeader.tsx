@@ -9,6 +9,7 @@ import { useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase
 import { doc, collection, query, where, limit, orderBy } from 'firebase/firestore';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { STATIC_NAV_ITEMS } from '@/lib/navigation-static';
 
 const HOLIDAY_TYPES = [
   { label: 'Beach Holidays', href: '/holidays?type=beach', icon: Palmtree, desc: 'Sun-soaked sands and turquoise waters.' },
@@ -25,12 +26,17 @@ export default function MainHeader() {
   const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
   const { data: settings } = useDoc(settingsRef);
 
+  // We fetch dynamic items but use static ones as primary to ensure instant load
   const navQuery = useMemoFirebase(() => query(
     collection(db, 'navigationItems'), 
-    orderBy('order', 'asc')
+    where('group', '==', 'mainHeader'),
+    orderBy('order', 'asc'),
+    limit(10)
   ), [db]);
-  const { data: allNavItems } = useCollection(navQuery);
-  const navItems = allNavItems?.filter(item => item.group === 'mainHeader') || [];
+  const { data: dynamicNavItems } = useCollection(navQuery);
+  
+  // Use dynamic items if they exist, otherwise use static fallback
+  const navItems = dynamicNavItems?.length ? dynamicNavItems : STATIC_NAV_ITEMS;
 
   const destQuery = useMemoFirebase(() => query(collection(db, 'destinations'), where('isPopular', '==', true), limit(4)), [db]);
   const { data: popularDests } = useCollection(destQuery);

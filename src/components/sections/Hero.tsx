@@ -24,7 +24,7 @@ export default function Hero() {
             alt="Tailor Travels Hero Background"
             fill
             className="object-cover"
-            priority
+            priority // CRITICAL: Ensure Hero image loads first for better LCP
             data-ai-hint="luxury beach"
           />
         )}

@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, Lock, Globe, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { collection, query, orderBy, limit } from 'firebase/firestore';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { STATIC_FOOTER_NAV } from '@/lib/navigation-static';
 
 const TRUST_ITEMS = [
   {
@@ -43,7 +44,11 @@ export default function Footer() {
   const [isAtolExpanded, setIsAtolExpanded] = useState(false);
   const db = useFirestore();
 
-  const navQuery = useMemoFirebase(() => query(collection(db, 'navigationItems'), orderBy('order', 'asc')), [db]);
+  const navQuery = useMemoFirebase(() => query(
+    collection(db, 'navigationItems'), 
+    orderBy('order', 'asc'),
+    limit(20)
+  ), [db]);
   const { data: allNavItems } = useCollection(navQuery);
 
   useEffect(() => {
@@ -82,8 +87,9 @@ export default function Footer() {
           <div className="md:hidden space-y-2 border-t border-white/10 pt-8">
             <Accordion type="multiple" className="w-full">
               {FOOTER_GROUPS.map((group) => {
-                const items = allNavItems?.filter(item => item.group === group.id) || [];
-                if (items.length === 0) return null;
+                const dynamicItems = allNavItems?.filter(item => item.group === group.id) || [];
+                const items = dynamicItems.length ? dynamicItems : STATIC_FOOTER_NAV[group.id as keyof typeof STATIC_FOOTER_NAV] || [];
+                
                 return (
                   <AccordionItem key={group.id} value={group.id} className="border-white/10">
                     <AccordionTrigger className="text-sm font-bold py-4 hover:no-underline hover:text-accent uppercase tracking-[0.15em]">
@@ -108,7 +114,9 @@ export default function Footer() {
 
           <div className="hidden md:grid md:grid-cols-2 lg:contents gap-10 lg:gap-4 lg:col-span-4">
             {FOOTER_GROUPS.map((group) => {
-              const items = allNavItems?.filter(item => item.group === group.id) || [];
+              const dynamicItems = allNavItems?.filter(item => item.group === group.id) || [];
+              const items = dynamicItems.length ? dynamicItems : STATIC_FOOTER_NAV[group.id as keyof typeof STATIC_FOOTER_NAV] || [];
+              
               return (
                 <div key={group.id} className="space-y-6">
                   <h4 className="font-bold text-xs uppercase tracking-[0.2em] text-white/40">{group.title}</h4>

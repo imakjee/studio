@@ -11,7 +11,11 @@ export default function FeaturedHolidays() {
   const db = useFirestore();
   
   const featuredQuery = useMemoFirebase(() => 
-    query(collection(db, 'holidays'), where('isFeatured', '==', true), limit(3)), 
+    query(
+      collection(db, 'holidays'), 
+      where('isFeatured', '==', true), 
+      limit(3) // PRODUCTION: Limit query to improve speed and reduce costs
+    ), 
   [db]);
   
   const { data: holidays, isLoading } = useCollection(featuredQuery);

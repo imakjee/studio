@@ -9,7 +9,11 @@ export default function PopularDestinations() {
   const db = useFirestore();
   
   const popularQuery = useMemoFirebase(() => 
-    query(collection(db, 'destinations'), where('isPopular', '==', true), limit(4)), 
+    query(
+      collection(db, 'destinations'), 
+      where('isPopular', '==', true), 
+      limit(4) // PRODUCTION: Limit query to minimize database load
+    ), 
   [db]);
 
   const { data: destinations, isLoading } = useCollection(popularQuery);
@@ -40,6 +44,7 @@ export default function PopularDestinations() {
                     alt={dest.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, 25vw"
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
