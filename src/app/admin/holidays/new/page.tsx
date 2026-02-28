@@ -16,9 +16,9 @@ export default function NewHolidayPage() {
   const handleSubmit = async (data: any) => {
     setLoading(true);
     try {
+      // Use Firestore generated ID by not providing a manual 'id' field
       await addDoc(collection(db, 'holidays'), {
         ...data,
-        id: Math.random().toString(36).substr(2, 9), // Simple ID for MVP
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         currency: 'GBP',

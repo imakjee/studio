@@ -1,23 +1,49 @@
+'use client';
 
+import { use } from 'react';
 import MainHeader from '@/components/layout/MainHeader';
 import Footer from '@/components/layout/Footer';
 import TopBar from '@/components/layout/TopBar';
-import { HOLIDAYS } from '@/lib/holiday-data';
-import { notFound } from 'next/navigation';
+import { useFirestore, useDoc } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, MapPin, Clock, Coffee, ShieldCheck, CheckCircle2, Phone, Calendar } from 'lucide-react';
 import Image from 'next/image';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default async function HolidayDetailPage({ params }: PageProps) {
-  const holiday = HOLIDAYS.find(h => h.id === params.id);
+export default function HolidayDetailPage({ params }: PageProps) {
+  const { id } = use(params);
+  const db = useFirestore();
+  const holidayRef = doc(db, 'holidays', id);
+  const { data: holiday, isLoading } = useDoc(holidayRef);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-muted/30">
+        <div className="text-center space-y-4">
+          <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="font-bold text-primary">Loading your escape...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!holiday) {
-    notFound();
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-primary mb-4">Holiday Not Found</h1>
+          <p className="text-muted-foreground mb-8">The luxury escape you're looking for might have been moved or removed.</p>
+          <Button asChild className="bg-primary rounded-xl px-8">
+            <a href="/holidays">Back to Holidays</a>
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -28,14 +54,14 @@ export default async function HolidayDetailPage({ params }: PageProps) {
       <main className="flex-grow">
         {/* Gallery Section */}
         <section className="bg-muted/30 pt-8 pb-12">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 max-w-[1300px]">
             <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <Badge className="bg-accent text-white font-bold">Featured Escape</Badge>
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-4 h-4 ${i < holiday.rating ? 'fill-accent text-accent' : 'text-muted'}`} />
+                      <Star key={i} className={`w-4 h-4 ${i < (holiday.ratingStars || 5) ? 'fill-accent text-accent' : 'text-muted'}`} />
                     ))}
                   </div>
                 </div>
@@ -47,14 +73,14 @@ export default async function HolidayDetailPage({ params }: PageProps) {
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-border/50 text-right w-full md:w-auto">
                 <p className="text-sm font-bold text-muted-foreground uppercase">From only</p>
-                <p className="text-4xl font-bold text-primary">£{holiday.price}<span className="text-sm font-medium ml-1">pp</span></p>
+                <p className="text-4xl font-bold text-primary">£{holiday.pricePerPerson}<span className="text-sm font-medium ml-1">pp</span></p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[500px] md:h-[600px]">
               <div className="lg:col-span-8 relative rounded-3xl overflow-hidden group shadow-xl">
                 <Image 
-                  src={holiday.image} 
+                  src={holiday.mainImageUrl || 'https://picsum.photos/seed/holiday/1200/800'} 
                   alt={holiday.name} 
                   fill 
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -85,17 +111,18 @@ export default async function HolidayDetailPage({ params }: PageProps) {
 
         {/* Content Section */}
         <section className="py-16">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 max-w-[1300px]">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="lg:col-span-2 space-y-12">
                 <div>
                   <h2 className="text-3xl font-bold text-primary font-headline mb-6">About this Holiday</h2>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {holiday.description} Discover a world of luxury at {holiday.name}. This hand-picked escape offers the perfect blend of relaxation and adventure. Every detail has been meticulously curated to ensure your stay is nothing short of extraordinary.
-                  </p>
-                  <p className="text-lg text-muted-foreground leading-relaxed mt-4">
-                    Whether you're looking for a romantic getaway or a fun-filled family adventure, this destination has something for everyone. From gourmet dining experiences to world-class spa facilities, your comfort is our priority.
-                  </p>
+                  <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+                    {holiday.description ? (
+                      <p>{holiday.description}</p>
+                    ) : (
+                      <p>Discover a world of luxury at {holiday.name}. This hand-picked escape offers the perfect blend of relaxation and adventure. Every detail has been meticulously curated to ensure your stay is nothing short of extraordinary.</p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-muted/30 p-8 rounded-3xl border border-border/50">
@@ -103,21 +130,21 @@ export default async function HolidayDetailPage({ params }: PageProps) {
                     <p className="text-xs font-bold text-muted-foreground uppercase">Duration</p>
                     <div className="flex items-center gap-2 font-bold text-primary">
                       <Clock className="w-5 h-5 text-accent" />
-                      {holiday.duration}
+                      {holiday.durationNights} Nights
                     </div>
                   </div>
                   <div className="space-y-1">
                     <p className="text-xs font-bold text-muted-foreground uppercase">Board Basis</p>
                     <div className="flex items-center gap-2 font-bold text-primary">
                       <Coffee className="w-5 h-5 text-accent" />
-                      {holiday.boardBasis}
+                      {holiday.boardType}
                     </div>
                   </div>
                   <div className="space-y-1">
                     <p className="text-xs font-bold text-muted-foreground uppercase">Departure</p>
                     <div className="flex items-center gap-2 font-bold text-primary">
                       <Calendar className="w-5 h-5 text-accent" />
-                      {holiday.departureDate || 'Flex Dates'}
+                      {holiday.availableFromDate ? new Date(holiday.availableFromDate).toLocaleDateString() : 'Flex Dates'}
                     </div>
                   </div>
                   <div className="space-y-1">
@@ -174,7 +201,7 @@ export default async function HolidayDetailPage({ params }: PageProps) {
                     <div className="pt-6 border-t border-border/50">
                       <div className="flex justify-between items-baseline mb-6">
                         <span className="text-lg font-bold text-primary">Total for 2 Adults</span>
-                        <span className="text-3xl font-bold text-primary">£{holiday.price * 2}</span>
+                        <span className="text-3xl font-bold text-primary">£{holiday.pricePerPerson * 2}</span>
                       </div>
                       
                       <Button className="w-full bg-accent hover:bg-accent/90 text-white font-bold h-16 rounded-2xl text-lg shadow-xl shadow-accent/20 mb-4">
