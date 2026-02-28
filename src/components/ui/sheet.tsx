@@ -7,13 +7,25 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const Sheet = SheetPrimitive.Root
+const Sheet = (props: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Root>) => (
+  <SheetPrimitive.Root {...props} />
+)
+Sheet.displayName = "Sheet"
 
-const SheetTrigger = SheetPrimitive.Trigger
+const SheetTrigger = (props: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Trigger>) => (
+  <SheetPrimitive.Trigger {...props} />
+)
+SheetTrigger.displayName = "SheetTrigger"
 
-const SheetClose = SheetPrimitive.Close
+const SheetClose = (props: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Close>) => (
+  <SheetPrimitive.Close {...props} />
+)
+SheetClose.displayName = "SheetClose"
 
-const SheetPortal = SheetPrimitive.Portal
+const SheetPortal = (props: SheetPrimitive.DialogPortalProps) => (
+  <SheetPrimitive.Portal {...props} />
+)
+SheetPortal.displayName = "SheetPortal"
 
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
