@@ -66,7 +66,24 @@ const aiEnhancedHeadlineGenerationFlow = ai.defineFlow(
     outputSchema: GenerateHeadlineOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
-    return output!;
+    try {
+      const { output } = await prompt(input);
+      if (!output || !output.headline) {
+        throw new Error('No headline generated');
+      }
+      return output;
+    } catch (error) {
+      // Log the error for monitoring but return a sensible default to avoid crashing the UI
+      console.error('AI Headline Generation failed (likely quota/rate limit):', error);
+      
+      // Provide a high-quality fallback based on the purpose
+      const fallbackHeadline = input.purpose.includes('hero') 
+        ? "Discover luxury destinations and unforgettable experiences worldwide."
+        : "Exclusive travel deals hand-picked for your next perfect escape.";
+        
+      return { 
+        headline: fallbackHeadline 
+      };
+    }
   }
 );
