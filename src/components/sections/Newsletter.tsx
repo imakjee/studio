@@ -15,30 +15,37 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-20 bg-primary/95 text-white w-full">
-      <div className="container mx-auto px-4 text-center">
-        <div className="bg-white/5 backdrop-blur-sm p-8 md:p-16 rounded-[40px] border border-white/10 max-w-4xl mx-auto">
-          <Mail className="w-12 h-12 text-accent mx-auto mb-6" />
-          <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Stay in the Loop</h2>
-          <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
-            Subscribe to our newsletter for exclusive deals, travel inspiration, and the latest updates from Elite Escapes.
+    <section className="py-24 bg-gradient-to-br from-[#0F4C55] to-[#0B3D44] text-white w-full">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center mx-auto mb-8 border border-white/20">
+            <Mail className="w-10 h-10 text-accent" />
+          </div>
+          
+          <h2 className="font-headline text-3xl md:text-5xl font-bold mb-4">Get Exclusive Deals</h2>
+          <p className="text-white/80 text-lg mb-12 max-w-xl mx-auto leading-relaxed">
+            Subscribe to our newsletter and be the first to know about special offers, new destinations, and travel tips.
           </p>
           
-          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-6">
             <Input 
               type="email" 
               placeholder="Your email address" 
-              className="bg-white/10 border-white/20 h-14 rounded-xl text-white placeholder:text-white/40 focus-visible:ring-accent"
+              className="bg-white text-primary h-14 rounded-full border-none px-8 placeholder:text-muted-foreground focus-visible:ring-accent"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Button type="submit" className="bg-accent hover:bg-accent/90 text-white h-14 rounded-xl px-10 font-bold shrink-0 transition-transform active:scale-95 shadow-lg shadow-accent/20">
+            <Button 
+              type="submit" 
+              className="bg-accent hover:bg-accent/90 text-white h-14 rounded-full px-10 font-bold shrink-0 transition-all active:scale-95 shadow-lg shadow-accent/20"
+            >
               Subscribe
             </Button>
           </form>
-          <p className="text-xs text-white/40 mt-6">
-            By subscribing, you agree to our Privacy Policy and Terms of Service.
+          
+          <p className="text-sm text-white/50">
+            No spam. Unsubscribe anytime.
           </p>
         </div>
       </div>
