@@ -13,10 +13,17 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'TravelAgency',
     'name': 'Tailor Travels',
-    'image': 'https://images.unsplash.com/photo-1602002418816-5c0aeef426aa?auto=format&fit=crop&q=80&w=1200',
-    '@id': 'https://tailortravels.co.uk',
+    'alternateName': 'Tailor Travels UK',
+    'description': 'Award-winning UK travel agency specializing in bespoke luxury holidays and premium cruises.',
     'url': 'https://tailortravels.co.uk',
-    'telephone': '0800 123 4567',
+    'logo': 'https://tailortravels.co.uk/logo.png',
+    'contactPoint': {
+      '@type': 'ContactPoint',
+      'telephone': '0800 123 4567',
+      'contactType': 'customer service',
+      'areaServed': 'GB',
+      'availableLanguage': 'en'
+    },
     'address': {
       '@type': 'PostalAddress',
       'streetAddress': '123 Luxury Lane',
@@ -37,7 +44,8 @@ export default function Home() {
         'Wednesday',
         'Thursday',
         'Friday',
-        'Saturday'
+        'Saturday',
+        'Sunday'
       ],
       'opens': '09:00',
       'closes': '20:00'
@@ -45,8 +53,10 @@ export default function Home() {
     'sameAs': [
       'https://www.facebook.com/tailortravels',
       'https://www.instagram.com/tailortravels',
-      'https://twitter.com/tailortravels'
-    ]
+      'https://twitter.com/tailortravels',
+      'https://www.linkedin.com/company/tailor-travels'
+    ],
+    'priceRange': '£££'
   };
 
   return (

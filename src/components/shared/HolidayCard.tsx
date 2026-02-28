@@ -12,20 +12,21 @@ interface HolidayCardProps {
 
 export default function HolidayCard({ holiday }: HolidayCardProps) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-border/50 flex flex-col h-full">
+    <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-border/50 flex flex-col h-full">
       <div className="relative h-64 overflow-hidden shrink-0">
         <Image 
           src={holiday.mainImageUrl || 'https://picsum.photos/seed/holiday/600/400'} 
-          alt={holiday.name} 
+          alt={`${holiday.name} holiday in ${holiday.location}`} 
           fill 
           className="object-cover group-hover:scale-110 transition-transform duration-500"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {holiday.isLastMinuteOffer && (
           <Badge className="absolute top-4 left-4 bg-accent text-white font-bold px-3">
             Last Minute Deal
           </Badge>
         )}
-        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-2 py-1 rounded-lg flex gap-0.5">
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-2 py-1 rounded-lg flex gap-0.5" aria-label={`Rating: ${holiday.ratingStars || 5} stars`}>
           {[...Array(5)].map((_, i) => (
             <Star key={i} className={`w-3 h-3 ${i < (holiday.ratingStars || 5) ? 'fill-accent text-accent' : 'fill-muted text-muted'}`} />
           ))}
@@ -38,7 +39,9 @@ export default function HolidayCard({ holiday }: HolidayCardProps) {
           {holiday.location}
         </div>
         <h3 className="font-headline text-xl font-bold text-primary mb-3 line-clamp-1 group-hover:text-accent transition-colors">
-          {holiday.name}
+          <Link href={`/holidays/${holiday.id}`} aria-label={`View details for ${holiday.name}`}>
+            {holiday.name}
+          </Link>
         </h3>
         
         <p className="text-muted-foreground text-sm mb-4 line-clamp-2 leading-relaxed">
@@ -75,12 +78,12 @@ export default function HolidayCard({ holiday }: HolidayCardProps) {
               View Deal
             </Button>
           </Link>
-          <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent/5 font-bold h-11 rounded-xl flex items-center gap-2">
+          <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent/5 font-bold h-11 rounded-xl flex items-center gap-2" aria-label={`Call to book ${holiday.name}`}>
             <Phone className="w-3 h-3" />
             Book
           </Button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
