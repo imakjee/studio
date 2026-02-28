@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useUser, useDoc, useFirestore } from '@/firebase';
+import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import Link from 'next/link';
 import { 
@@ -36,24 +36,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const auth = useAuth();
 
   // DBAC: Check if user is in roles_admin collection
-  const adminDocRef = user ? doc(db, 'roles_admin', user.uid) : null;
-  const { data: adminRole, isLoading: isAdminRoleLoading, error: adminError } = useDoc(adminDocRef);
+  const adminDocRef = useMemoFirebase(() => {
+    if (!db || !user) return null;
+    return doc(db, 'roles_admin', user.uid);
+  }, [db, user]);
+
+  const { data: adminRole, isLoading: isAdminRoleLoading } = useDoc(adminDocRef);
 
   useEffect(() => {
-    // 1. If not logged in at all, go to login
     if (!isUserLoading && !user && pathname !== '/admin/login' && pathname !== '/admin/setup') {
       router.push('/admin/login');
       return;
     }
 
-    // 2. If logged in but definitely not an admin (after check completes)
     if (!isUserLoading && user && !isAdminRoleLoading && !adminRole && pathname !== '/admin/login' && pathname !== '/admin/setup') {
-      // We keep them on the page but show the "Access Denied" state below
       console.warn("Access denied: User is not an admin");
     }
   }, [user, isUserLoading, adminRole, isAdminRoleLoading, pathname, router]);
 
-  // Public admin pages don't need the sidebar layout
   if (pathname === '/admin/login' || pathname === '/admin/setup') return <>{children}</>;
 
   if (isUserLoading || isAdminRoleLoading) {
@@ -67,7 +67,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  // Unauthorized State
   if (user && !adminRole) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-muted/20 p-4">
@@ -96,7 +95,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex min-h-screen bg-muted/20">
-      {/* Sidebar */}
       <aside className="w-64 bg-primary text-white flex flex-col shrink-0">
         <div className="p-8">
           <Link href="/" className="flex items-center gap-2 group">
@@ -151,7 +149,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 flex flex-col">
         <header className="h-20 bg-white border-b flex items-center justify-between px-8">
           <h2 className="text-xl font-headline font-bold text-primary">

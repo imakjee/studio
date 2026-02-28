@@ -4,7 +4,7 @@ import { use } from 'react';
 import MainHeader from '@/components/layout/MainHeader';
 import Footer from '@/components/layout/Footer';
 import TopBar from '@/components/layout/TopBar';
-import { useFirestore, useDoc } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +18,12 @@ interface PageProps {
 export default function HolidayDetailPage({ params }: PageProps) {
   const { id } = use(params);
   const db = useFirestore();
-  const holidayRef = doc(db, 'holidays', id);
+
+  const holidayRef = useMemoFirebase(() => {
+    if (!db || !id) return null;
+    return doc(db, 'holidays', id);
+  }, [db, id]);
+
   const { data: holiday, isLoading } = useDoc(holidayRef);
 
   if (isLoading) {
@@ -52,7 +57,6 @@ export default function HolidayDetailPage({ params }: PageProps) {
       <MainHeader />
       
       <main className="flex-grow">
-        {/* Gallery Section */}
         <section className="bg-muted/30 pt-8 pb-12">
           <div className="container mx-auto px-4 max-w-[1300px]">
             <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
@@ -109,7 +113,6 @@ export default function HolidayDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Content Section */}
         <section className="py-16">
           <div className="container mx-auto px-4 max-w-[1300px]">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -176,7 +179,6 @@ export default function HolidayDetailPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Booking Card */}
               <aside className="lg:col-span-1">
                 <div className="bg-white p-8 rounded-[40px] shadow-2xl border border-border/50 sticky top-28">
                   <h3 className="text-2xl font-bold text-primary font-headline mb-6">Book Your Escape</h3>

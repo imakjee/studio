@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useFirestore, useDoc } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import HolidayForm from '../form';
 import { useToast } from '@/hooks/use-toast';
@@ -14,10 +14,15 @@ export default function EditHolidayPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  const holidayRef = doc(db, 'holidays', params.id as string);
+  const holidayRef = useMemoFirebase(() => {
+    if (!db || !params.id) return null;
+    return doc(db, 'holidays', params.id as string);
+  }, [db, params.id]);
+
   const { data: holiday, isLoading: isFetching } = useDoc(holidayRef);
 
   const handleSubmit = async (data: any) => {
+    if (!holidayRef) return;
     setLoading(true);
     try {
       await updateDoc(holidayRef, {
