@@ -182,6 +182,7 @@ export default function Footer() {
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
             <Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
+            <Link href="/sitemap.xml" className="hover:text-white transition-colors font-bold">Sitemap</Link>
           </div>
         </div>
       </div>
