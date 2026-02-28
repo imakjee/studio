@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Star, MapPin, Clock, Coffee, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Link from 'next/link';
 
 interface HolidayCardProps {
   holiday: any; // Using Firestore holiday object

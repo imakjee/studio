@@ -31,8 +31,8 @@ export default function HolidaysAdminPage() {
   };
 
   const filteredHolidays = holidays?.filter(h => 
-    h.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    h.location.toLowerCase().includes(searchTerm.toLowerCase())
+    h.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    h.location?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -77,7 +77,7 @@ export default function HolidaysAdminPage() {
                   <TableCell className="py-4 pl-8">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-xl bg-muted overflow-hidden shrink-0">
-                        <img src={holiday.mainImageUrl} alt="" className="w-full h-full object-cover" />
+                        {holiday.mainImageUrl && <img src={holiday.mainImageUrl} alt="" className="w-full h-full object-cover" />}
                       </div>
                       <div>
                         <p className="font-bold text-primary">{holiday.name}</p>

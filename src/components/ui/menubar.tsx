@@ -6,30 +6,15 @@ import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const MenubarMenu = (props: React.ComponentProps<typeof MenubarPrimitive.Menu>) => (
-  <MenubarPrimitive.Menu {...props} />
-)
-MenubarMenu.displayName = "MenubarMenu"
+const MenubarMenu = MenubarPrimitive.Menu
 
-const MenubarGroup = (props: React.ComponentProps<typeof MenubarPrimitive.Group>) => (
-  <MenubarPrimitive.Group {...props} />
-)
-MenubarGroup.displayName = "MenubarGroup"
+const MenubarGroup = MenubarPrimitive.Group
 
-const MenubarPortal = (props: React.ComponentProps<typeof MenubarPrimitive.Portal>) => (
-  <MenubarPrimitive.Portal {...props} />
-)
-MenubarPortal.displayName = "MenubarPortal"
+const MenubarPortal = MenubarPrimitive.Portal
 
-const MenubarRadioGroup = (props: React.ComponentProps<typeof MenubarPrimitive.RadioGroup>) => (
-  <MenubarPrimitive.RadioGroup {...props} />
-)
-MenubarRadioGroup.displayName = "MenubarRadioGroup"
+const MenubarRadioGroup = MenubarPrimitive.RadioGroup
 
-const MenubarSub = (props: React.ComponentProps<typeof MenubarPrimitive.Sub>) => (
-  <MenubarPrimitive.Sub {...props} />
-)
-MenubarSub.displayName = "MenubarSub"
+const MenubarSub = MenubarPrimitive.Sub
 
 const Menubar = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
@@ -70,7 +55,7 @@ const MenubarSubTrigger = React.forwardRef<
   <MenubarPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+      "flex cursor-default gap-2 select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
       inset && "pl-8",
       className
     )}

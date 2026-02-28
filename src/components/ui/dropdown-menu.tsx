@@ -6,35 +6,17 @@ import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const DropdownMenu = (props: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) => (
-  <DropdownMenuPrimitive.Root {...props} />
-)
-DropdownMenu.displayName = "DropdownMenu"
+const DropdownMenu = DropdownMenuPrimitive.Root
 
-const DropdownMenuTrigger = (props: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) => (
-  <DropdownMenuPrimitive.Trigger {...props} />
-)
-DropdownMenuTrigger.displayName = "DropdownMenuTrigger"
+const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 
-const DropdownMenuGroup = (props: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) => (
-  <DropdownMenuPrimitive.Group {...props} />
-)
-DropdownMenuGroup.displayName = "DropdownMenuGroup"
+const DropdownMenuGroup = DropdownMenuPrimitive.Group
 
-const DropdownMenuPortal = (props: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) => (
-  <DropdownMenuPrimitive.Portal {...props} />
-)
-DropdownMenuPortal.displayName = "DropdownMenuPortal"
+const DropdownMenuPortal = DropdownMenuPrimitive.Portal
 
-const DropdownMenuSub = (props: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) => (
-  <DropdownMenuPrimitive.Sub {...props} />
-)
-DropdownMenuSub.displayName = "DropdownMenuSub"
+const DropdownMenuSub = DropdownMenuPrimitive.Sub
 
-const DropdownMenuRadioGroup = (props: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) => (
-  <DropdownMenuPrimitive.RadioGroup {...props} />
-)
-DropdownMenuRadioGroup.displayName = "DropdownMenuRadioGroup"
+const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,

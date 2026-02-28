@@ -43,7 +43,6 @@ export default function Footer() {
   const [isAtolExpanded, setIsAtolExpanded] = useState(false);
   const db = useFirestore();
 
-  // Fetch all navigation items at once and filter locally for performance
   const navQuery = useMemoFirebase(() => query(collection(db, 'navigationItems'), orderBy('order', 'asc')), [db]);
   const { data: allNavItems } = useCollection(navQuery);
 
@@ -54,7 +53,6 @@ export default function Footer() {
   return (
     <footer className="bg-[#050505] text-white w-full">
       <div className="container mx-auto px-4 py-12 md:py-20 lg:py-24">
-        {/* Section 1 — Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8 mb-16 md:mb-20">
           <div className="lg:col-span-2 flex flex-col items-center md:items-start text-center md:text-left">
             <h4 className="font-headline text-3xl font-bold text-white mb-6">
@@ -81,7 +79,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Mobile Accordion - Visible only on mobile screens */}
           <div className="md:hidden space-y-2 border-t border-white/10 pt-8">
             <Accordion type="multiple" className="w-full">
               {FOOTER_GROUPS.map((group) => {
@@ -109,7 +106,6 @@ export default function Footer() {
             </Accordion>
           </div>
 
-          {/* Desktop/Tablet Grid - Hidden on small mobile */}
           <div className="hidden md:grid md:grid-cols-2 lg:contents gap-10 lg:gap-4 lg:col-span-4">
             {FOOTER_GROUPS.map((group) => {
               const items = allNavItems?.filter(item => item.group === group.id) || [];
@@ -131,7 +127,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Section 2 — Trust Row */}
         <div className="border-t border-white/10 py-12 md:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 lg:gap-16">
             {TRUST_ITEMS.map((item, i) => (
@@ -148,7 +143,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Section: ATOL Protection Information */}
         <div className="border-t border-white/10 pt-12 md:pt-16 pb-10 text-center">
           <div className="max-w-4xl mx-auto px-4">
             <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-6">
@@ -192,7 +186,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Section 3 — Bottom Bar */}
         <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-10">
           <div className="text-white/30 text-[10px] uppercase tracking-[0.25em] font-medium text-center md:text-left">
             © {currentYear ?? '2024'} Tailor Travels UK. All Rights Reserved. 

@@ -7,25 +7,13 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const Sheet = (props: React.ComponentProps<typeof SheetPrimitive.Root>) => (
-  <SheetPrimitive.Root {...props} />
-)
-Sheet.displayName = "Sheet"
+const Sheet = SheetPrimitive.Root
 
-const SheetTrigger = (props: React.ComponentProps<typeof SheetPrimitive.Trigger>) => (
-  <SheetPrimitive.Trigger {...props} />
-)
-SheetTrigger.displayName = "SheetTrigger"
+const SheetTrigger = SheetPrimitive.Trigger
 
-const SheetClose = (props: React.ComponentProps<typeof SheetPrimitive.Close>) => (
-  <SheetPrimitive.Close {...props} />
-)
-SheetClose.displayName = "SheetClose"
+const SheetClose = SheetPrimitive.Close
 
-const SheetPortal = (props: SheetPrimitive.DialogPortalProps) => (
-  <SheetPrimitive.Portal {...props} />
-)
-SheetPortal.displayName = "SheetPortal"
+const SheetPortal = SheetPrimitive.Portal
 
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
@@ -40,7 +28,7 @@ const SheetOverlay = React.forwardRef<
     ref={ref}
   />
 ))
-SheetOverlay.displayName = "SheetOverlay"
+SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
   "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
@@ -84,7 +72,7 @@ const SheetContent = React.forwardRef<
     </SheetPrimitive.Content>
   </SheetPortal>
 ))
-SheetContent.displayName = "SheetContent"
+SheetContent.displayName = SheetPrimitive.Content.displayName
 
 const SheetHeader = ({
   className,
@@ -124,7 +112,7 @@ const SheetTitle = React.forwardRef<
     {...props}
   />
 ))
-SheetTitle.displayName = "SheetTitle"
+SheetTitle.displayName = SheetPrimitive.Title.displayName
 
 const SheetDescription = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Description>,
@@ -136,7 +124,7 @@ const SheetDescription = React.forwardRef<
     {...props}
   />
 ))
-SheetDescription.displayName = "SheetDescription"
+SheetDescription.displayName = SheetPrimitive.Description.displayName
 
 export {
   Sheet,

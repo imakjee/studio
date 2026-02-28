@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/navigation';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Phone, Menu, ChevronDown, Palmtree, Ship, Building2, Star, Compass, ArrowRight } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
@@ -248,9 +248,11 @@ export default function MainHeader() {
                       </li>
                     ))}
                   </ul>
-                  <Button variant="outline" className="w-full rounded-xl border-accent text-accent font-bold mt-4">
-                    Explore All Regions
-                  </Button>
+                  <Link href="/destinations" className="block w-full mt-4">
+                    <Button variant="outline" className="w-full rounded-xl border-accent text-accent font-bold">
+                      Explore All Regions
+                    </Button>
+                  </Link>
                 </div>
                 <div className="md:col-span-9">
                   <div className="flex justify-between items-center mb-8">

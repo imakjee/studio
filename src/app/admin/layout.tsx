@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
-import Link from 'next/link';
 import { 
   LayoutDashboard, 
   Palmtree, 
