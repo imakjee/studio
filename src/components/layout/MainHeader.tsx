@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
+import Link from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Phone, Menu, ChevronDown, Palmtree, Ship, Building2, Star, MapPin, Compass, ArrowRight, Loader2 } from 'lucide-react';
+import { Phone, Menu, ChevronDown, Palmtree, Ship, Building2, Star, Compass, ArrowRight } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, where, limit, orderBy } from 'firebase/firestore';
@@ -22,11 +22,9 @@ export default function MainHeader() {
   const db = useFirestore();
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Global Settings
   const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // Fetch all navigation items and filter locally to avoid requires composite indexes
   const navQuery = useMemoFirebase(() => query(
     collection(db, 'navigationItems'), 
     orderBy('order', 'asc')
@@ -34,11 +32,9 @@ export default function MainHeader() {
   const { data: allNavItems } = useCollection(navQuery);
   const navItems = allNavItems?.filter(item => item.group === 'mainHeader') || [];
 
-  // Fetch Popular Destinations for Mega Menu
   const destQuery = useMemoFirebase(() => query(collection(db, 'destinations'), where('isPopular', '==', true), limit(4)), [db]);
   const { data: popularDests } = useCollection(destQuery);
 
-  // Close menu on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -57,7 +53,15 @@ export default function MainHeader() {
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group shrink-0" onClick={() => setActiveMega(null)}>
           {settings?.logoUrl ? (
-            <img src={settings.logoUrl} alt="Tailor Travels Logo" className="h-12 w-auto object-contain" />
+            <div className="relative h-12 w-48">
+              <Image 
+                src={settings.logoUrl} 
+                alt="Tailor Travels Logo" 
+                fill 
+                className="object-contain" 
+                priority
+              />
+            </div>
           ) : (
             <>
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center group-hover:bg-accent transition-colors">
@@ -70,9 +74,7 @@ export default function MainHeader() {
           )}
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-2 h-full">
-          {/* Holidays Mega Menu Trigger */}
           <div 
             className="h-full flex items-center"
             onMouseEnter={() => handleMouseEnter('holidays')}
@@ -86,7 +88,6 @@ export default function MainHeader() {
             </button>
           </div>
 
-          {/* Destinations Mega Menu Trigger */}
           <div 
             className="h-full flex items-center"
             onMouseEnter={() => handleMouseEnter('destinations')}
@@ -100,7 +101,6 @@ export default function MainHeader() {
             </button>
           </div>
 
-          {/* CMS Driven Links */}
           {navItems.map((item) => (
             <Link 
               key={item.id} 
@@ -124,7 +124,6 @@ export default function MainHeader() {
             <span className="xs:hidden">Call</span>
           </Button>
 
-          {/* Mobile Menu */}
           <div className="lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
@@ -176,7 +175,6 @@ export default function MainHeader() {
         </div>
       </div>
 
-      {/* Mega Menu Content Overlay */}
       {activeMega && (
         <div 
           className="absolute left-0 w-full bg-white border-b shadow-2xl animate-in fade-in slide-in-from-top-2 duration-300 z-40"

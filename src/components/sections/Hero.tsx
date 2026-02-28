@@ -20,11 +20,12 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         {heroImage && (
           <Image
-            src={settings?.logoUrl || heroImage.imageUrl}
-            alt="Elite Escapes Hero"
+            src={heroImage.imageUrl}
+            alt="Tailor Travels Hero Background"
             fill
             className="object-cover"
             priority
+            data-ai-hint="luxury beach"
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
