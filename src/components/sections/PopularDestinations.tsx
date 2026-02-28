@@ -1,14 +1,19 @@
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+'use client';
 
-const DESTINATIONS = [
-  { id: 'tenerife', name: 'Tenerife', subtitle: 'Island Paradise', image: PlaceHolderImages.find(img => img.id === 'tenerife-beach') },
-  { id: 'nyc', name: 'New York', subtitle: 'The Big Apple', image: PlaceHolderImages.find(img => img.id === 'new-york') },
-  { id: 'bali', name: 'Bali', subtitle: 'Tropical Retreat', image: PlaceHolderImages.find(img => img.id === 'bali-temple') },
-  { id: 'maldives-grid', name: 'Maldives', subtitle: 'Pure Luxury', image: PlaceHolderImages.find(img => img.id === 'maldives-luxury') }
-];
+import Image from 'next/image';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection, query, where, limit } from 'firebase/firestore';
+import { Loader2 } from 'lucide-react';
 
 export default function PopularDestinations() {
+  const db = useFirestore();
+  
+  const popularQuery = useMemoFirebase(() => 
+    query(collection(db, 'destinations'), where('isPopular', '==', true), limit(4)), 
+  [db]);
+
+  const { data: destinations, isLoading } = useCollection(popularQuery);
+
   return (
     <section className="py-20 bg-white w-full">
       <div className="container mx-auto px-4">
@@ -19,26 +24,33 @@ export default function PopularDestinations() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {DESTINATIONS.map((dest) => (
-            <div key={dest.id} className="relative group h-[400px] rounded-2xl overflow-hidden cursor-pointer shadow-lg transition-transform hover:-translate-y-1">
-              {dest.image && (
-                <Image
-                  src={dest.image.imageUrl}
-                  alt={dest.name}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  data-ai-hint={dest.image.imageHint}
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <p className="text-sm font-medium text-accent uppercase tracking-widest mb-1">{dest.subtitle}</p>
-                <h3 className="text-2xl font-bold font-headline">{dest.name}</h3>
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : !destinations?.length ? (
+          <div className="text-center py-20 text-muted-foreground">No destinations found.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {destinations.map((dest) => (
+              <div key={dest.id} className="relative group h-[400px] rounded-2xl overflow-hidden cursor-pointer shadow-lg transition-transform hover:-translate-y-1">
+                {dest.imageUrl && (
+                  <Image
+                    src={dest.imageUrl}
+                    alt={dest.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-6 left-6 text-white">
+                  <p className="text-sm font-medium text-accent uppercase tracking-widest mb-1">Elite Hotspot</p>
+                  <h3 className="text-2xl font-bold font-headline">{dest.name}</h3>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

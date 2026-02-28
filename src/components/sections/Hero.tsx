@@ -1,31 +1,18 @@
 "use client";
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { generateHeadline } from '@/ai/flows/ai-enhanced-headline-generation';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import SearchBox from './SearchBox';
 import { Shield, Star, BadgeCheck } from 'lucide-react';
 
 export default function Hero() {
-  const [subtitle, setSubtitle] = useState("Discover luxury destinations and unforgettable experiences worldwide.");
-  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-beach');
+  const db = useFirestore();
+  const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
+  const { data: settings } = useDoc(settingsRef);
 
-  useEffect(() => {
-    async function fetchAIHeadline() {
-      try {
-        const result = await generateHeadline({
-          purpose: "hero section subtitle",
-          details: "premium luxury travel agency focusing on beach, cruise and family holidays",
-          keywords: ["luxury", "unforgettable", "exclusive"]
-        });
-        if (result.headline) setSubtitle(result.headline);
-      } catch (e) {
-        console.error("Failed to generate AI headline", e);
-      }
-    }
-    fetchAIHeadline();
-  }, []);
+  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-beach');
 
   return (
     <section className="relative min-h-[700px] py-20 overflow-hidden w-full">
@@ -33,12 +20,11 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         {heroImage && (
           <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
+            src={settings?.logoUrl || heroImage.imageUrl}
+            alt="Elite Escapes Hero"
             fill
             className="object-cover"
             priority
-            data-ai-hint={heroImage.imageHint}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
@@ -48,10 +34,10 @@ export default function Hero() {
       <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
         <div className="text-center mb-12 max-w-4xl mx-auto">
           <h1 className="font-headline text-4xl md:text-6xl text-white font-bold mb-4 drop-shadow-lg">
-            Your Perfect Holiday Awaits
+            {settings?.heroHeading || 'Your Perfect Holiday Awaits'}
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-medium drop-shadow-md">
-            {subtitle}
+            {settings?.heroSubtitle || 'Discover luxury destinations and unforgettable experiences worldwide.'}
           </p>
         </div>
 

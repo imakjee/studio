@@ -1,7 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Phone, Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 
 const NAV_ITEMS = [
   { label: 'Holidays', href: '/holidays' },
@@ -12,6 +16,10 @@ const NAV_ITEMS = [
 ];
 
 export default function MainHeader() {
+  const db = useFirestore();
+  const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
+  const { data: settings } = useDoc(settingsRef);
+
   return (
     <header className="bg-white border-b shadow-sm sticky top-0 z-50 w-full">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
@@ -40,12 +48,12 @@ export default function MainHeader() {
         <div className="flex items-center gap-4">
           <Link href="/contact" className="hidden sm:block">
             <Button variant="outline" className="border-primary text-primary hover:bg-primary/5">
-              Get a Quote
+              {settings?.ctaQuoteButtonText || 'Get a Quote'}
             </Button>
           </Link>
           <Button className="bg-accent hover:bg-accent/90 text-white font-bold flex items-center gap-2 px-6 shadow-lg shadow-accent/20">
             <Phone className="w-4 h-4" />
-            <span className="hidden xs:inline">0800 123 4567</span>
+            <span className="hidden xs:inline">{settings?.contactPhoneNumber || '0800 123 4567'}</span>
             <span className="xs:hidden">Call</span>
           </Button>
 
