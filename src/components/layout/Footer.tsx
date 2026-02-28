@@ -3,49 +3,8 @@
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, Lock, Globe, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
-
-const FOOTER_COLUMNS = [
-  {
-    title: 'Holiday Types',
-    links: [
-      { label: 'Beach Holidays', href: '/holidays?type=beach' },
-      { label: 'City Breaks', href: '/holidays?type=city' },
-      { label: 'Family Holidays', href: '/holidays?type=family' },
-      { label: 'Luxury Holidays', href: '/holidays?type=luxury' },
-      { label: 'All Inclusive', href: '/holidays?type=all-inclusive' },
-    ],
-  },
-  {
-    title: 'Destinations',
-    links: [
-      { label: 'Spain', href: '/holidays/spain' },
-      { label: 'Greece', href: '/holidays/greece' },
-      { label: 'Turkey', href: '/holidays/turkey' },
-      { label: 'Portugal', href: '/holidays/portugal' },
-      { label: 'Dubai', href: '/holidays/dubai' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'About Us', href: '/about' },
-      { label: 'Contact Us', href: '/contact' },
-      { label: 'Find a Branch', href: '/branches' },
-      { label: 'Careers', href: '/about#careers' },
-      { label: 'Press', href: '/about#press' },
-    ],
-  },
-  {
-    title: 'Support',
-    links: [
-      { label: 'Help Centre', href: '/faq' },
-      { label: 'Manage Booking', href: '/login' },
-      { label: 'Travel Insurance', href: '/services/insurance' },
-      { label: 'Terms & Conditions', href: '/terms' },
-      { label: 'Privacy Policy', href: '/privacy' },
-    ],
-  },
-];
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection, query, orderBy } from 'firebase/firestore';
 
 const TRUST_ITEMS = [
   {
@@ -71,9 +30,21 @@ const TRUST_ITEMS = [
   }
 ];
 
+const FOOTER_GROUPS = [
+  { id: 'footerHolidayTypes', title: 'Holiday Types' },
+  { id: 'footerDestinations', title: 'Destinations' },
+  { id: 'footerCompany', title: 'Company' },
+  { id: 'footerSupport', title: 'Support' },
+];
+
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
   const [isAtolExpanded, setIsAtolExpanded] = useState(false);
+  const db = useFirestore();
+
+  // Fetch all navigation items at once and filter locally for performance
+  const navQuery = useMemoFirebase(() => query(collection(db, 'navigationItems'), orderBy('order', 'asc')), [db]);
+  const { data: allNavItems } = useCollection(navQuery);
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
@@ -109,20 +80,23 @@ export default function Footer() {
             </div>
           </div>
 
-          {FOOTER_COLUMNS.map((group) => (
-            <div key={group.title} className="lg:col-span-1">
-              <h4 className="font-bold mb-6 text-base text-white">{group.title}</h4>
-              <ul className="space-y-4">
-                {group.links.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href} className="text-white/60 hover:text-white transition-colors text-sm">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {FOOTER_GROUPS.map((group) => {
+            const items = allNavItems?.filter(item => item.group === group.id) || [];
+            return (
+              <div key={group.id} className="lg:col-span-1">
+                <h4 className="font-bold mb-6 text-base text-white">{group.title}</h4>
+                <ul className="space-y-4">
+                  {items.map((link) => (
+                    <li key={link.id}>
+                      <Link href={link.url} className="text-white/60 hover:text-white transition-colors text-sm">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
 
         {/* Section 2 — Trust Row */}

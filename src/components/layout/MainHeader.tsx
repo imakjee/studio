@@ -3,10 +3,10 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Phone, Menu, ChevronDown, Palmtree, Ship, Building2, Star, MapPin, Compass, ArrowRight } from 'lucide-react';
+import { Phone, Menu, ChevronDown, Palmtree, Ship, Building2, Star, MapPin, Compass, ArrowRight, Loader2 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
-import { doc, collection, query, where, limit } from 'firebase/firestore';
+import { doc, collection, query, where, limit, orderBy } from 'firebase/firestore';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +25,14 @@ export default function MainHeader() {
   // Global Settings
   const settingsRef = useMemoFirebase(() => doc(db, 'companyInfo', 'globalSettings'), [db]);
   const { data: settings } = useDoc(settingsRef);
+
+  // Fetch Navigation Items for Header
+  const navQuery = useMemoFirebase(() => query(
+    collection(db, 'navigationItems'), 
+    where('group', '==', 'mainHeader'),
+    orderBy('order', 'asc')
+  ), [db]);
+  const { data: navItems } = useCollection(navQuery);
 
   // Fetch Popular Destinations for Mega Menu
   const destQuery = useMemoFirebase(() => query(collection(db, 'destinations'), where('isPopular', '==', true), limit(4)), [db]);
@@ -92,9 +100,16 @@ export default function MainHeader() {
             </button>
           </div>
 
-          <Link href="/cruises" className="px-4 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">Cruises</Link>
-          <Link href="/deals" className="px-4 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">Deals</Link>
-          <Link href="/about" className="px-4 py-2 text-sm font-bold text-primary hover:text-accent transition-colors">About Us</Link>
+          {/* CMS Driven Links */}
+          {navItems?.map((item) => (
+            <Link 
+              key={item.id} 
+              href={item.url} 
+              className="px-4 py-2 text-sm font-bold text-primary hover:text-accent transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center gap-4">
@@ -142,10 +157,10 @@ export default function MainHeader() {
                     <div>
                       <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">Quick Links</h3>
                       <div className="flex flex-col gap-4">
+                        {navItems?.map((item) => (
+                          <Link key={item.id} href={item.url} className="text-lg font-bold text-primary">{item.label}</Link>
+                        ))}
                         <Link href="/destinations" className="text-lg font-bold text-primary">All Destinations</Link>
-                        <Link href="/cruises" className="text-lg font-bold text-primary">Cruises</Link>
-                        <Link href="/deals" className="text-lg font-bold text-primary">Special Deals</Link>
-                        <Link href="/about" className="text-lg font-bold text-primary">About Our Agency</Link>
                       </div>
                     </div>
                   </div>
