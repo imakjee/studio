@@ -18,7 +18,7 @@ import {
   Star,
   Map,
   Link as LinkIcon,
-  Sparkles
+  UserCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/firebase';
@@ -33,6 +33,7 @@ const ADMIN_NAV = [
   { label: 'Navigation', href: '/admin/navigation', icon: LinkIcon },
   { label: 'Subscribers', href: '/admin/subscribers', icon: Users },
   { label: 'Site Settings', href: '/admin/settings', icon: Settings },
+  { label: 'My Account', href: '/admin/profile', icon: UserCircle },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
