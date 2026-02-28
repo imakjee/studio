@@ -2,7 +2,7 @@ rules_version = '2';
 
 /**
  * TAILOR TRAVELS - FIRESTORE SECURITY RULES
- * Updated to allow public listing of CMS-driven navigation and content.
+ * Updated to ensure public listing of CMS-driven navigation and content is permitted.
  */
 
 service cloud.firestore {
@@ -25,6 +25,7 @@ service cloud.firestore {
     // --- COLLECTION RULES ---
 
     // Publicly readable collections (CMS Content)
+    // These allow users to browse holidays, destinations, and see menu items.
     match /holidays/{holidayId} {
       allow get, list: if true;
       allow create: if isAdmin();
@@ -70,15 +71,15 @@ service cloud.firestore {
     // Special case: Company Info is a singleton document
     match /companyInfo/{documentId} {
       allow get: if true;
-      allow list: if false; // Should only get specific docs by ID
+      allow list: if true; // Changed to true to support listing if needed by CMS
       allow create: if isAdmin();
       allow update, delete: if isExistingAdmin();
     }
 
     // Private collection: Newsletter Subscribers
     match /newsletterSubscribers/{subscriberId} {
-      allow create: if true;
-      allow get, list: if isAdmin();
+      allow create: if true; // Anyone can sign up
+      allow get, list: if isAdmin(); // Only admins can see the list
       allow update, delete: if isExistingAdmin();
     }
 
@@ -88,7 +89,7 @@ service cloud.firestore {
     match /roles_admin/{userId} {
       // Allow user to read their own admin document to verify role
       allow get: if isSignedIn() && request.auth.uid == userId;
-      // Allow initial setup creation
+      // Allow initial setup creation if the user is setting up their own admin account
       allow create: if isSignedIn() && request.auth.uid == userId;
       // Other admin management requires existing admin role
       allow list, update, delete: if isAdmin();
