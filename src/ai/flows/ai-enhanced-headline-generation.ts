@@ -73,13 +73,17 @@ const aiEnhancedHeadlineGenerationFlow = ai.defineFlow(
       }
       return output;
     } catch (error) {
-      // Log the error for monitoring but return a sensible default to avoid crashing the UI
-      console.error('AI Headline Generation failed (likely quota/rate limit):', error);
+      // Log error internally, but do not throw to prevent UI crashes on rate limits
+      console.warn('AI Headline Generation failed (Rate limited or service error). Returning fallback.', error);
       
-      // Provide a high-quality fallback based on the purpose
-      const fallbackHeadline = input.purpose.includes('hero') 
-        ? "Discover luxury destinations and unforgettable experiences worldwide."
-        : "Exclusive travel deals hand-picked for your next perfect escape.";
+      // High-quality fallback headlines
+      let fallbackHeadline = "Exclusive travel deals hand-picked for your next perfect escape.";
+      
+      if (input.purpose.toLowerCase().includes('hero')) {
+        fallbackHeadline = "Discover luxury destinations and unforgettable experiences worldwide.";
+      } else if (input.purpose.toLowerCase().includes('last minute')) {
+        fallbackHeadline = "Hurry! These exclusive travel deals won't last long.";
+      }
         
       return { 
         headline: fallbackHeadline 
