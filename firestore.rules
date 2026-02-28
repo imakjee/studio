@@ -3,7 +3,7 @@ rules_version = '2';
 /**
  * TAILOR TRAVELS - FIRESTORE SECURITY RULES
  * Updated to ensure all CMS content is publicly accessible for dynamic site generation.
- * Deployment Trigger: March 2024
+ * Connectivity Fix Trigger: February 2026
  */
 
 service cloud.firestore {
