@@ -45,7 +45,7 @@ const prompt = ai.definePrompt({
   name: 'generateHeadlinePrompt',
   input: { schema: GenerateHeadlineInputSchema },
   output: { schema: GenerateHeadlineOutputSchema },
-  prompt: `You are an expert copywriter for a premium travel agency named "Elite Escapes".
+  prompt: `You are an expert copywriter for a premium bespoke travel agency named "Tailor Travels".
 Your task is to create a catchy, conversion-optimized headline for a travel promotion or section of a website.
 
 Consider the following:
@@ -55,7 +55,7 @@ Consider the following:
 - **Keywords**: {{#each keywords}}- {{{this}}}
 {{/each}}{{/if}}
 
-Generate a single headline that is enticing, highlights the key benefits, and encourages users to click or learn more. Keep it concise and impactful.
+Generate a single headline that is enticing, highlights the bespoke nature of the trip, and encourages users to click or learn more. Keep it concise and impactful.
 `,
 });
 
@@ -77,12 +77,12 @@ const aiEnhancedHeadlineGenerationFlow = ai.defineFlow(
       console.warn('AI Headline Generation failed (Rate limited or service error). Returning fallback.', error);
       
       // High-quality fallback headlines
-      let fallbackHeadline = "Exclusive travel deals hand-picked for your next perfect escape.";
+      let fallbackHeadline = "Bespoke travel deals hand-picked for your next perfect escape.";
       
       if (input.purpose.toLowerCase().includes('hero')) {
-        fallbackHeadline = "Discover luxury destinations and unforgettable experiences worldwide.";
+        fallbackHeadline = "Discover tailored luxury destinations and unforgettable experiences worldwide.";
       } else if (input.purpose.toLowerCase().includes('last minute')) {
-        fallbackHeadline = "Hurry! These exclusive travel deals won't last long.";
+        fallbackHeadline = "Hurry! These exclusive tailored deals won't last long.";
       }
         
       return { 

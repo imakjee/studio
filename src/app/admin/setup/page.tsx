@@ -79,7 +79,7 @@ export default function AdminSetupPage() {
   };
 
   const handleQuickSetup = () => {
-    handleSetup(undefined, 'admin@eliteescapes.co.uk', 'password123');
+    handleSetup(undefined, 'admin@tailortravels.co.uk', 'password123');
   };
 
   return (
@@ -89,9 +89,9 @@ export default function AdminSetupPage() {
           <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-md">
             <UserPlus className="w-8 h-8 text-accent" />
           </div>
-          <CardTitle className="text-3xl font-headline font-bold">Admin Setup</CardTitle>
+          <CardTitle className="text-3xl font-headline font-bold">Tailor Travels Admin</CardTitle>
           <CardDescription className="text-white/70">
-            Initialize your Elite Escapes management account
+            Initialize your bespoke management account
           </CardDescription>
         </CardHeader>
         
@@ -109,7 +109,7 @@ export default function AdminSetupPage() {
               className="w-full bg-accent hover:bg-accent/90 text-white font-bold h-12 rounded-2xl shadow-lg shadow-accent/20"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-              Quick Setup: admin@eliteescapes.co.uk
+              Quick Setup: admin@tailortravels.co.uk
             </Button>
           </div>
 
@@ -126,7 +126,7 @@ export default function AdminSetupPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="e.g. yourname@eliteescapes.co.uk"
+                placeholder="e.g. yourname@tailortravels.co.uk"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="rounded-xl h-12"
@@ -152,7 +152,7 @@ export default function AdminSetupPage() {
         <CardFooter className="bg-muted/50 p-6">
           <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
             <ShieldCheck className="w-3 h-3 text-green-600" />
-            Admin accounts have full control over holidays and subscribers.
+            Admin accounts have full control over holidays and CMS content.
           </div>
         </CardFooter>
       </Card>

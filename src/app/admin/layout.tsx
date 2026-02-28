@@ -101,9 +101,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-8">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 bg-white/10 rounded flex items-center justify-center">
-              <span className="text-white font-headline text-lg font-bold italic">E</span>
+              <span className="text-white font-headline text-lg font-bold italic">T</span>
             </div>
-            <span className="font-headline font-bold text-lg uppercase tracking-tight">Elite<span className="text-accent">Admin</span></span>
+            <span className="font-headline font-bold text-lg uppercase tracking-tight">Tailor<span className="text-accent">Admin</span></span>
           </Link>
         </div>
 
@@ -154,7 +154,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         <header className="h-20 bg-white border-b flex items-center justify-between px-8 shrink-0">
           <h2 className="text-xl font-headline font-bold text-primary">
-            {ADMIN_NAV.find(n => n.href === pathname)?.label || 'Elite Escapes Management'}
+            {ADMIN_NAV.find(n => n.href === pathname)?.label || 'Tailor Travels Management'}
           </h2>
           <div className="flex items-center gap-4">
              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-100">

@@ -1,4 +1,3 @@
-
 import MainHeader from '@/components/layout/MainHeader';
 import Footer from '@/components/layout/Footer';
 import TopBar from '@/components/layout/TopBar';
@@ -17,7 +16,7 @@ export default function AboutPage() {
           <div className="container mx-auto px-4 relative z-10 text-center max-w-3xl">
             <h1 className="text-5xl md:text-6xl font-bold font-headline mb-6">Our Journey</h1>
             <p className="text-xl text-white/70 leading-relaxed">
-              At Elite Escapes, we don't just book holidays. We curate unforgettable experiences that stay with you forever. From humble beginnings to the UK's leading luxury travel agency.
+              At Tailor Travels, we don't just book holidays. We curate bespoke experiences that stay with you forever. From humble beginnings to the UK's leading luxury travel partner.
             </p>
           </div>
         </div>
@@ -29,14 +28,14 @@ export default function AboutPage() {
               <div>
                 <img 
                   src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&q=80&w=800" 
-                  alt="Elite Escapes Office" 
+                  alt="Tailor Travels Office" 
                   className="rounded-[40px] shadow-2xl"
                 />
               </div>
               <div className="space-y-6">
                 <h2 className="text-3xl md:text-4xl font-bold font-headline text-primary">Over 40 Years of Excellence</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Founded in 1980, Elite Escapes began with a simple mission: to provide personalized, high-quality travel advice that puts the customer first. Today, we are proud to be an independent, family-owned business with over 500 branches across the UK.
+                  Founded in 1980, Tailor Travels began with a simple mission: to provide personalized, high-quality travel advice that puts the customer first. Today, we are proud to be an independent, family-owned business with over 500 branches across the UK.
                 </p>
                 <p className="text-lg text-muted-foreground leading-relaxed">
                   Our growth has been fueled by our passion for travel and our commitment to our people. Every one of our travel consultants is a seasoned explorer, bringing first-hand knowledge to help you find your perfect escape.
@@ -68,7 +67,7 @@ export default function AboutPage() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-4">Our Core Values</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">The principles that guide everything we do at Elite Escapes.</p>
+              <p className="text-muted-foreground max-w-2xl mx-auto">The principles that guide everything we do at Tailor Travels.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

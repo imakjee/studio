@@ -85,8 +85,11 @@ export default function Footer() {
         {/* Section 1 — Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
           <div className="lg:col-span-2">
+            <h4 className="font-headline text-2xl font-bold text-white mb-6">
+              Tailor<span className="text-accent">Travels</span>
+            </h4>
             <p className="text-white/80 mb-8 max-w-[240px] leading-relaxed text-sm">
-              Your trusted travel partner. ATOL protected and award-winning service.
+              Your trusted travel partner. ATOL protected and award-winning service curated for your perfect escape.
             </p>
             <div className="flex items-center gap-3">
               {[
@@ -172,7 +175,7 @@ export default function Footer() {
         {/* Section 3 — Bottom Bar */}
         <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-white/40 text-sm">
-            © {currentYear ?? '2024'} Elite Escapes. All rights reserved.
+            © {currentYear ?? '2024'} Tailor Travels. All rights reserved.
           </div>
           
           <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-white/40 text-sm">

@@ -4,8 +4,8 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Elite Escapes | Premium Travel Agency',
-  description: 'Book your luxury holiday with Elite Escapes. Premium cruises, beach holidays, and last-minute deals.',
+  title: 'Tailor Travels | Bespoke Luxury Travel Agency',
+  description: 'Book your perfect bespoke holiday with Tailor Travels. Premium cruises, beach holidays, and last-minute deals curated for you.',
 };
 
 export default function RootLayout({

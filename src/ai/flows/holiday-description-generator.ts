@@ -28,7 +28,7 @@ const prompt = ai.definePrompt({
   name: 'generateHolidayDescriptionPrompt',
   input: { schema: GenerateDescriptionInputSchema },
   output: { schema: GenerateDescriptionOutputSchema },
-  prompt: `You are a luxury travel copywriter for "Elite Escapes".
+  prompt: `You are a luxury travel copywriter for "Tailor Travels".
 Generate an enticing 2-paragraph description for a holiday at "{{{hotelName}}}" located in "{{{location}}}".
 
 {{#if features}}
@@ -37,7 +37,7 @@ Key features to highlight:
 {{/each}}
 {{/if}}
 
-The tone should be sophisticated, inviting, and focus on the unique experiences the guest will have.`,
+The tone should be sophisticated, inviting, and focus on the unique, tailored experiences the guest will have.`,
 });
 
 const generateHolidayDescriptionFlow = ai.defineFlow(
@@ -53,7 +53,7 @@ const generateHolidayDescriptionFlow = ai.defineFlow(
     } catch (error) {
       console.warn('AI Description Generation failed. Returning fallback.', error);
       return {
-        description: `Discover the breathtaking beauty of ${input.hotelName} in ${input.location}. This hand-picked luxury escape offers a perfect blend of relaxation and adventure, curated meticulously for our elite guests. Experience world-class service and unforgettable memories at this stunning destination.`
+        description: `Discover the breathtaking beauty of ${input.hotelName} in ${input.location}. This hand-picked luxury escape offers a perfect blend of relaxation and adventure, curated meticulously by the experts at Tailor Travels. Experience world-class service and unforgettable memories at this stunning destination.`
       };
     }
   }

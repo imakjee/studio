@@ -26,7 +26,7 @@ export default function AdminSettingsPage() {
     operatingHoursText: 'Open 7 days a week',
     heroHeading: 'Your Perfect Holiday Awaits',
     heroSubtitle: 'Discover luxury destinations and unforgettable experiences worldwide.',
-    footerCopyrightText: 'Elite Escapes. All rights reserved.',
+    footerCopyrightText: 'Tailor Travels. All rights reserved.',
     logoUrl: '',
     ctaQuoteButtonText: 'Get a Quote',
     ctaCallButtonText: 'Call Us',
@@ -63,7 +63,7 @@ export default function AdminSettingsPage() {
     try {
       const result = await generateHeadline({
         purpose: "hero section subtitle",
-        details: `Luxury travel agency Elite Escapes. Main heading: ${formData.heroHeading}`,
+        details: `Luxury travel agency Tailor Travels. Main heading: ${formData.heroHeading}`,
         keywords: ["premium", "unforgettable", "luxury", "expert"]
       });
       setFormData(prev => ({ ...prev, heroSubtitle: result.headline }));
@@ -214,11 +214,12 @@ export default function AdminSettingsPage() {
                 )}
               </div>
               <Input 
-                placeholder="Logo URL" 
+                placeholder="Paste Logo URL here" 
                 value={formData.logoUrl}
                 onChange={e => setFormData({ ...formData, logoUrl: e.target.value })}
                 className="rounded-xl h-11"
               />
+              <p className="text-[10px] text-muted-foreground italic px-2">Tip: Upload your Tailor Travels logo to a hosting service and paste the direct link above.</p>
             </CardContent>
           </Card>
 
@@ -237,7 +238,7 @@ export default function AdminSettingsPage() {
               </div>
               <div className="pt-4 flex items-center gap-2 text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
                 <Globe className="w-3 h-3" />
-                Live on eliteescapes.co.uk
+                Live on tailortravels.co.uk
               </div>
             </CardContent>
           </Card>
