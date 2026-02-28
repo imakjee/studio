@@ -16,12 +16,13 @@ export default function HolidaysPage() {
   const db = useFirestore();
   const [searchTerm, setSearchTerm] = useState('');
   
-  const holidayQuery = useMemoFirebase(() => query(collection(db, 'holidays'), orderBy('createdAt', 'desc')), [db]);
+  // Use a query that either orders by name or doesn't use orderBy if createdAt might be missing
+  const holidayQuery = useMemoFirebase(() => query(collection(db, 'holidays')), [db]);
   const { data: holidays, isLoading } = useCollection(holidayQuery);
 
   const filteredHolidays = holidays?.filter(h => 
-    h.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    h.location.toLowerCase().includes(searchTerm.toLowerCase())
+    h.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    h.location?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -35,7 +36,7 @@ export default function HolidaysPage() {
           <div className="container mx-auto px-4 max-w-[1300px]">
             <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4">Explore Our Holidays</h1>
             <p className="text-white/70 text-lg max-w-2xl">
-              From sun-soaked beaches to luxury city escapes, find your next unforgettable journey with Elite Escapes.
+              From sun-soaked beaches to luxury city escapes, find your next unforgettable journey with Tailor Travels.
             </p>
           </div>
         </div>
@@ -135,9 +136,13 @@ export default function HolidaysPage() {
                     <div key={i} className="h-[400px] bg-muted animate-pulse rounded-2xl" />
                   ))}
                 </div>
+              ) : !filteredHolidays?.length ? (
+                <div className="text-center py-20 bg-white rounded-3xl border border-dashed">
+                  <p className="text-muted-foreground">No holidays found. Try a different search.</p>
+                </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredHolidays?.map((holiday) => (
+                  {filteredHolidays.map((holiday) => (
                     <HolidayCard key={holiday.id} holiday={holiday} />
                   ))}
                 </div>

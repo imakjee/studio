@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserPlus, ShieldCheck, Zap, Loader2, Database, CheckCircle2 } from 'lucide-react';
+import { UserPlus, ShieldCheck, Zap, Loader2, Database } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminSetupPage() {
@@ -91,7 +91,7 @@ export default function AdminSetupPage() {
         updatedAt: serverTimestamp(),
       });
 
-      // 2. Destinations (10 Locations)
+      // 2. Destinations
       const dests = [
         { name: 'Maldives', isPopular: true, imageUrl: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&q=80&w=800', description: 'Paradise on earth with crystal clear waters.' },
         { name: 'Santorini', isPopular: true, imageUrl: 'https://images.unsplash.com/photo-1580225495234-00e84e19c85e?auto=format&fit=crop&q=80&w=800', description: 'Iconic sunsets and white-washed buildings.' },
@@ -115,7 +115,7 @@ export default function AdminSetupPage() {
         { title: 'Expert Advice', description: 'Our consultants have visited 95% of the destinations we sell.', iconName: 'Headphones', order: 3 },
       ];
       for (const f of features) {
-        await addDoc(collection(db, 'whyBookFeatures'), f);
+        await addDoc(collection(db, 'whyBookFeatures'), { ...f, createdAt: serverTimestamp() });
       }
 
       // 4. Stats
@@ -126,7 +126,7 @@ export default function AdminSetupPage() {
         { value: '4.8/5', label: 'Review Score', iconName: 'Star', order: 4 },
       ];
       for (const s of stats) {
-        await addDoc(collection(db, 'companyStatistics'), s);
+        await addDoc(collection(db, 'companyStatistics'), { ...s, createdAt: serverTimestamp() });
       }
 
       // 5. Navigation
@@ -140,10 +140,10 @@ export default function AdminSetupPage() {
         { label: 'Contact Us', url: '/contact', group: 'footerCompany', order: 2 },
       ];
       for (const n of navs) {
-        await addDoc(collection(db, 'navigationItems'), n);
+        await addDoc(collection(db, 'navigationItems'), { ...n, createdAt: serverTimestamp() });
       }
 
-      // 6. Holidays (12 Packages)
+      // 6. Holidays
       const holidays = [
         {
           name: 'Ozen Reserve Bolifushi',
@@ -160,7 +160,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-10-01',
           availableToDate: '2025-04-01',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Atlantis The Royal',
@@ -178,7 +177,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-09-15',
           availableToDate: '2024-12-31',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Aman Kyoto Retreat',
@@ -195,7 +193,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-11-01',
           availableToDate: '2025-05-01',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Four Seasons Serengeti Safari',
@@ -212,7 +209,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-10-15',
           availableToDate: '2025-03-15',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Belmond Hotel Caruso',
@@ -230,7 +226,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-09-01',
           availableToDate: '2024-10-31',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'The Ritz Paris',
@@ -247,7 +242,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-10-01',
           availableToDate: '2025-12-31',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Four Seasons Bora Bora',
@@ -264,7 +258,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-12-01',
           availableToDate: '2025-08-01',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'The Retreat at Blue Lagoon',
@@ -282,7 +275,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-11-01',
           availableToDate: '2025-04-01',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Rosewood London',
@@ -299,7 +291,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-09-01',
           availableToDate: '2025-12-31',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Soneva Jani',
@@ -316,7 +307,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-10-01',
           availableToDate: '2025-05-31',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Burj Al Arab Jumeirah',
@@ -333,7 +323,6 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-09-01',
           availableToDate: '2025-12-31',
-          createdAt: serverTimestamp(),
         },
         {
           name: 'Mandarin Oriental',
@@ -351,11 +340,10 @@ export default function AdminSetupPage() {
           destinationId: 'global',
           availableFromDate: '2024-09-15',
           availableToDate: '2025-03-31',
-          createdAt: serverTimestamp(),
         }
       ];
       for (const h of holidays) {
-        await addDoc(collection(db, 'holidays'), h);
+        await addDoc(collection(db, 'holidays'), { ...h, createdAt: serverTimestamp() });
       }
 
       toast({ title: "Database Seeded!", description: "All professional demo data has been successfully created." });
