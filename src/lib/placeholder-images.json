@@ -1,3 +1,46 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-beach",
+      "description": "Luxury beach resort with turquoise water",
+      "imageUrl": "https://images.unsplash.com/photo-1602002418816-5c0aeef426aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtYWxkaXZlcyUyMGJlYWNofGVufDB8fHx8MTc3MjI3Nzc5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "maldives beach"
+    },
+    {
+      "id": "maldives-luxury",
+      "description": "Overwater bungalow in Maldives",
+      "imageUrl": "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtYWxkaXZlcyUyMHJlc29ydHxlbnwwfHx8fDE3NzIyNzY5OTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "maldives resort"
+    },
+    {
+      "id": "santorini-view",
+      "description": "White buildings in Santorini overlooking the sea",
+      "imageUrl": "https://images.unsplash.com/photo-1580225495234-00e84e19c85e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzYW50b3JpbmklMjBncmVlY2V8ZW58MHx8fHwxNzcyMjc2OTkyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "santorini greece"
+    },
+    {
+      "id": "dubai-skyline",
+      "description": "Dubai city skyline at sunset",
+      "imageUrl": "https://images.unsplash.com/photo-1667592441284-b590021411e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkdWJhaSUyMGNpdHl8ZW58MHx8fHwxNzcyMjc3Nzk1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "dubai city"
+    },
+    {
+      "id": "tenerife-beach",
+      "description": "Beautiful beach in Tenerife",
+      "imageUrl": "https://images.unsplash.com/photo-1695219600195-b7dde5b1b584?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx0ZW5lcmlmZSUyMGJlYWNofGVufDB8fHx8MTc3MjI3Nzc5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tenerife beach"
+    },
+    {
+      "id": "bali-temple",
+      "description": "Traditional Balinese temple in the jungle",
+      "imageUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxiYWxpJTIwdGVtcGxlfGVufDB8fHx8MTc3MjI3Nzc5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "bali temple"
+    },
+    {
+      "id": "new-york",
+      "description": "Times Square New York",
+      "imageUrl": "https://images.unsplash.com/photo-1496588152823-86ff7695e68f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxuZXclMjB5b3JrJTIwY2l0eXxlbnwwfHx8fDE3NzIyMTgwMzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "new york city"
+    }
+  ]
 }
