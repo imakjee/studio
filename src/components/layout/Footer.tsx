@@ -148,6 +148,7 @@ export default function Footer() {
             <button 
               onClick={() => setIsAtolExpanded(!isAtolExpanded)}
               className="group inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-bold text-sm"
+              suppressHydrationWarning
             >
               <span>{isAtolExpanded ? 'Hide Details' : 'Read Full Protection Details'}</span>
               {isAtolExpanded ? (
