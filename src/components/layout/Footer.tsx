@@ -1,6 +1,8 @@
+'use client';
 
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Linkedin, ShieldCheck, MapPin, Mail, Phone } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const FOOTER_LINKS = [
   {
@@ -46,6 +48,12 @@ const FOOTER_LINKS = [
 ];
 
 export default function Footer() {
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 pt-20 pb-10">
@@ -103,7 +111,7 @@ export default function Footer() {
               <Link href="#" className="hover:text-white transition-colors">Cookie Policy</Link>
               <Link href="#" className="hover:text-white transition-colors">Accessibility</Link>
             </div>
-            <p>© {new Date().getFullYear()} Elite Escapes Travel Group Ltd. All rights reserved.</p>
+            <p>© {currentYear ?? '...'} Elite Escapes Travel Group Ltd. All rights reserved.</p>
           </div>
         </div>
       </div>
