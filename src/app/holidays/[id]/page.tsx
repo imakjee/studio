@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { use, useEffect, useState } from 'react';
 import MainHeader from '@/components/layout/MainHeader';
 import Footer from '@/components/layout/Footer';
 import TopBar from '@/components/layout/TopBar';
@@ -85,7 +85,7 @@ export default function HolidayDetailPage({ params }: PageProps) {
               <div className="lg:col-span-8 relative rounded-3xl overflow-hidden group shadow-xl">
                 <Image 
                   src={holiday.mainImageUrl || 'https://picsum.photos/seed/holiday/1200/800'} 
-                  alt={holiday.name} 
+                  alt={`${holiday.name} hotel view`} 
                   fill 
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   priority
@@ -95,7 +95,7 @@ export default function HolidayDetailPage({ params }: PageProps) {
                 <div className="relative rounded-3xl overflow-hidden shadow-lg">
                   <Image 
                     src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=800" 
-                    alt="Interior" 
+                    alt={`${holiday.name} luxury interior`} 
                     fill 
                     className="object-cover"
                   />
@@ -103,7 +103,7 @@ export default function HolidayDetailPage({ params }: PageProps) {
                 <div className="relative rounded-3xl overflow-hidden shadow-lg">
                   <Image 
                     src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800" 
-                    alt="Pool" 
+                    alt={`${holiday.name} infinity pool`} 
                     fill 
                     className="object-cover"
                   />
