@@ -2,17 +2,62 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Mail } from 'lucide-react';
+import { Mail, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
+import { useFirestore } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const db = useFirestore();
+  const { toast } = useToast();
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Thank you for subscribing, ${email}!`);
-    setEmail("");
+    setLoading(true);
+    
+    try {
+      await addDoc(collection(db, 'newsletterSubscribers'), {
+        email: email,
+        subscriptionDate: new Date().toISOString(),
+        createdAt: serverTimestamp(),
+      });
+      
+      setIsSubscribed(true);
+      setEmail("");
+      toast({
+        title: "Subscribed!",
+        description: "Welcome to Elite Escapes. You'll hear from us soon.",
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Subscription Failed",
+        description: "Unable to join the newsletter at this time. Please try again later.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (isSubscribed) {
+    return (
+      <section className="py-24 bg-gradient-to-br from-[#0F4C55] to-[#0B3D44] text-white w-full">
+        <div className="container mx-auto px-4 text-center">
+          <div className="w-20 h-20 bg-green-500/20 backdrop-blur-md rounded-3xl flex items-center justify-center mx-auto mb-8 border border-green-500/30">
+            <CheckCircle2 className="w-10 h-10 text-green-400" />
+          </div>
+          <h2 className="font-headline text-3xl md:text-5xl font-bold mb-4">You're on the list!</h2>
+          <p className="text-white/80 text-lg max-w-xl mx-auto leading-relaxed">
+            Thank you for joining our community. Check your inbox soon for your first exclusive travel update.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24 bg-gradient-to-br from-[#0F4C55] to-[#0B3D44] text-white w-full">
@@ -35,12 +80,14 @@ export default function Newsletter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
             />
             <Button 
               type="submit" 
+              disabled={loading}
               className="bg-accent hover:bg-accent/90 text-white h-14 rounded-full px-10 font-bold shrink-0 transition-all active:scale-95 shadow-lg shadow-accent/20"
             >
-              Subscribe
+              {loading ? "Joining..." : "Subscribe"}
             </Button>
           </form>
           
