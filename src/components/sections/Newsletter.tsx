@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -16,9 +15,9 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-20 bg-primary/95 text-white">
-      <div className="container mx-auto px-4 max-w-4xl text-center">
-        <div className="bg-white/5 backdrop-blur-sm p-8 md:p-16 rounded-[40px] border border-white/10">
+    <section className="py-20 bg-primary/95 text-white w-full">
+      <div className="container mx-auto px-4 text-center">
+        <div className="bg-white/5 backdrop-blur-sm p-8 md:p-16 rounded-[40px] border border-white/10 max-w-4xl mx-auto">
           <Mail className="w-12 h-12 text-accent mx-auto mb-6" />
           <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Stay in the Loop</h2>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">

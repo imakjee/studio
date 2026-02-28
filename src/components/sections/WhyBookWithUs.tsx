@@ -1,4 +1,3 @@
-
 import { ShieldCheck, Trophy, Headphones, Users, Home } from 'lucide-react';
 
 const FEATURES = [
@@ -26,7 +25,7 @@ const STATS = [
 
 export default function WhyBookWithUs() {
   return (
-    <section className="py-24 bg-background">
+    <section className="py-24 bg-background w-full">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold mb-4">Why Book With Us</h2>

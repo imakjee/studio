@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -29,8 +28,8 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-[700px] flex flex-col justify-center items-center py-20 px-4 overflow-hidden">
-      {/* Background with overlay */}
+    <section className="relative min-h-[700px] py-20 overflow-hidden w-full">
+      {/* Background with overlay (Stretches Full Width) */}
       <div className="absolute inset-0 z-0">
         {heroImage && (
           <Image
@@ -45,31 +44,34 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
       </div>
 
-      <div className="relative z-10 container mx-auto text-center mb-12">
-        <h1 className="font-headline text-4xl md:text-6xl text-white font-bold mb-4 drop-shadow-lg">
-          Your Perfect Holiday Awaits
-        </h1>
-        <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-medium drop-shadow-md">
-          {subtitle}
-        </p>
-      </div>
+      {/* Centered Content Container */}
+      <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
+        <div className="text-center mb-12 max-w-4xl mx-auto">
+          <h1 className="font-headline text-4xl md:text-6xl text-white font-bold mb-4 drop-shadow-lg">
+            Your Perfect Holiday Awaits
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-medium drop-shadow-md">
+            {subtitle}
+          </p>
+        </div>
 
-      <div className="relative z-20 w-full max-w-5xl mx-auto">
-        <SearchBox />
-        
-        {/* Trust Badges */}
-        <div className="mt-8 flex flex-wrap justify-center gap-8 text-white">
-          <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-            <Shield className="w-5 h-5 text-accent" />
-            <span className="text-sm font-medium">ATOL Protected</span>
-          </div>
-          <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-            <Star className="w-5 h-5 text-accent fill-accent" />
-            <span className="text-sm font-medium">4.8/5 Customer Rating</span>
-          </div>
-          <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-            <BadgeCheck className="w-5 h-5 text-accent" />
-            <span className="text-sm font-medium">Price Match Promise</span>
+        <div className="w-full max-w-5xl mx-auto">
+          <SearchBox />
+          
+          {/* Trust Badges */}
+          <div className="mt-8 flex flex-wrap justify-center gap-8 text-white">
+            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+              <Shield className="w-5 h-5 text-accent" />
+              <span className="text-sm font-medium">ATOL Protected</span>
+            </div>
+            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+              <Star className="w-5 h-5 text-accent fill-accent" />
+              <span className="text-sm font-medium">4.8/5 Customer Rating</span>
+            </div>
+            <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+              <BadgeCheck className="w-5 h-5 text-accent" />
+              <span className="text-sm font-medium">Price Match Promise</span>
+            </div>
           </div>
         </div>
       </div>

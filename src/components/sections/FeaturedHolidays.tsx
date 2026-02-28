@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import { Star, MapPin, Clock, Coffee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -40,7 +39,7 @@ const HOLIDAYS = [
 
 export default function FeaturedHolidays() {
   return (
-    <section className="py-20 bg-background/50">
+    <section className="py-20 bg-background/50 w-full">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-10">
           <div>

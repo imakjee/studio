@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -11,7 +10,7 @@ const DESTINATIONS = [
 
 export default function PopularDestinations() {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white w-full">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold mb-4">Popular Destinations</h2>

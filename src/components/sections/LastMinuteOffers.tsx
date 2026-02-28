@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -30,7 +29,7 @@ const OFFERS = [
 
 export default function LastMinuteOffers() {
   return (
-    <section className="py-24 bg-primary relative overflow-hidden">
+    <section className="py-24 bg-primary relative overflow-hidden w-full">
       {/* Decorative background circle */}
       <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />

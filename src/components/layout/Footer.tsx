@@ -55,7 +55,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-primary text-white">
+    <footer className="bg-primary text-white w-full">
       <div className="container mx-auto px-4 pt-20 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
           <div className="lg:col-span-2">
