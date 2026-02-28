@@ -14,7 +14,11 @@ import {
   Settings,
   ChevronRight,
   ShieldCheck,
-  AlertCircle
+  AlertCircle,
+  Star,
+  Map,
+  Link as LinkIcon,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/firebase';
@@ -24,6 +28,9 @@ const ADMIN_NAV = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Holidays', href: '/admin/holidays', icon: Palmtree },
   { label: 'Destinations', href: '/admin/destinations', icon: MapPin },
+  { label: 'Trust & Features', href: '/admin/features', icon: Star },
+  { label: 'Branches', href: '/admin/branches', icon: Map },
+  { label: 'Navigation', href: '/admin/navigation', icon: LinkIcon },
   { label: 'Subscribers', href: '/admin/subscribers', icon: Users },
   { label: 'Site Settings', href: '/admin/settings', icon: Settings },
 ];
@@ -35,7 +42,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const auth = useAuth();
 
-  // DBAC: Check if user is in roles_admin collection
   const adminDocRef = useMemoFirebase(() => {
     if (!db || !user) return null;
     return doc(db, 'roles_admin', user.uid);
@@ -48,11 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       router.push('/admin/login');
       return;
     }
-
-    if (!isUserLoading && user && !isAdminRoleLoading && !adminRole && pathname !== '/admin/login' && pathname !== '/admin/setup') {
-      console.warn("Access denied: User is not an admin");
-    }
-  }, [user, isUserLoading, adminRole, isAdminRoleLoading, pathname, router]);
+  }, [user, isUserLoading, pathname, router]);
 
   if (pathname === '/admin/login' || pathname === '/admin/setup') return <>{children}</>;
 
@@ -105,7 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
         </div>
 
-        <nav className="flex-1 px-4 space-y-1">
+        <nav className="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
           {ADMIN_NAV.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -118,7 +120,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               >
                 <div className="flex items-center gap-3">
                   <item.icon className="w-5 h-5" />
-                  <span>{item.label}</span>
+                  <span className="text-sm">{item.label}</span>
                 </div>
                 {isActive && <ChevronRight className="w-4 h-4" />}
               </Link>
@@ -127,7 +129,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="p-4 mt-auto">
-          <div className="bg-white/5 rounded-2xl p-4 mb-4">
+          <div className="bg-white/5 rounded-2xl p-4">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-xs font-bold">
                 {user?.email?.[0].toUpperCase()}
@@ -149,19 +151,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col">
-        <header className="h-20 bg-white border-b flex items-center justify-between px-8">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        <header className="h-20 bg-white border-b flex items-center justify-between px-8 shrink-0">
           <h2 className="text-xl font-headline font-bold text-primary">
             {ADMIN_NAV.find(n => n.href === pathname)?.label || 'Elite Escapes Management'}
           </h2>
           <div className="flex items-center gap-4">
              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-100">
                <ShieldCheck className="w-3.5 h-3.5" />
-               System Online
+               CMS Live
              </div>
           </div>
         </header>
-        <div className="p-8 overflow-y-auto">
+        <div className="p-8 overflow-y-auto flex-1 bg-muted/20">
           {children}
         </div>
       </main>
