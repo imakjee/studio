@@ -4,15 +4,13 @@ This is a production-optimized Next.js 15 platform for Tailor Travels, featuring
 
 ## 🚀 How to Publish (Live Deployment)
 
-To take this website live for your users, follow these steps inside Firebase Studio:
+To take this website live, follow these steps inside Firebase Studio:
 
-1.  **Build the Project**: Firebase Studio automatically handles the build process, but ensure your code changes are saved.
-2.  **Open Firebase Sidebar**: Click the **Firebase icon** (the orange flame) in the left-hand vertical sidebar of this editor.
-3.  **Deploy**: 
-    - Look for the **"Hosting"** section in the sidebar.
-    - Click the **"Deploy to Hosting"** button.
-    - Studio will compile your site into the `out` folder and upload it to your project.
-4.  **View Site**: Once finished, a URL will be provided (e.g., `https://your-project-id.web.app`).
+1.  **Open Firebase Sidebar**: Click the **Firebase icon** (the orange flame) in the left-hand vertical sidebar.
+2.  **Login Step**: If asked to login, a browser window will open. Sign in with your Google account.
+3.  **The "Code"**: If the terminal asks for an "authorization code", copy it from the browser window and paste it back into the Firebase prompt in Studio.
+4.  **Deploy**: Click the **"Deploy to Hosting"** button. Studio will compile your site into the `out` folder and upload it.
+5.  **View Site**: Once finished, your URL will be: `https://studio-6536263211-a9ebf.web.app`
 
 ## 🛠️ Custom Domain
 To use your professional domain (e.g., `tailortravels.co.uk`):
