@@ -18,7 +18,7 @@ const RadioGroup = React.forwardRef<
     />
   )
 })
-RadioGroup.displayName = "RadioGroup"
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
@@ -39,6 +39,6 @@ const RadioGroupItem = React.forwardRef<
     </RadioGroupPrimitive.Item>
   )
 })
-RadioGroupItem.displayName = "RadioGroupItem"
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
 
 export { RadioGroup, RadioGroupItem }

@@ -6,30 +6,15 @@ import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const MenubarMenu = (props: React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Menu>) => (
-  <MenubarPrimitive.Menu {...props} />
-)
-MenubarMenu.displayName = "MenubarMenu"
+const MenubarMenu = MenubarPrimitive.Menu
 
-const MenubarGroup = (props: React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Group>) => (
-  <MenubarPrimitive.Group {...props} />
-)
-MenubarGroup.displayName = "MenubarGroup"
+const MenubarGroup = MenubarPrimitive.Group
 
-const MenubarPortal = (props: MenubarPrimitive.MenubarPortalProps) => (
-  <MenubarPrimitive.Portal {...props} />
-)
-MenubarPortal.displayName = "MenubarPortal"
+const MenubarPortal = MenubarPrimitive.Portal
 
-const MenubarRadioGroup = (props: React.ComponentPropsWithoutRef<typeof MenubarPrimitive.RadioGroup>) => (
-  <MenubarPrimitive.RadioGroup {...props} />
-)
-MenubarRadioGroup.displayName = "MenubarRadioGroup"
+const MenubarRadioGroup = MenubarPrimitive.RadioGroup
 
-const MenubarSub = (props: React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Sub>) => (
-  <MenubarPrimitive.Sub {...props} />
-)
-MenubarSub.displayName = "MenubarSub"
+const MenubarSub = MenubarPrimitive.Sub
 
 const Menubar = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Root>,
@@ -112,7 +97,7 @@ const MenubarContent = React.forwardRef<
         alignOffset={alignOffset}
         sideOffset={sideOffset}
         className={cn(
-          "z-50 min-w-[12rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+          "z-50 min-w-[12rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data--------------side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           className
         )}
         {...props}
