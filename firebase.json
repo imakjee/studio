@@ -6,12 +6,9 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "errorPage": "/404.html",
     "headers": [
       {
         "source": "**/*.@(js|css|woff2|woff|ttf|png|jpg|jpeg|gif|svg|webp|ico)",
