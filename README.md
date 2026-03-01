@@ -1,30 +1,30 @@
 # Tailor Travels - Bespoke Luxury Travel Platform
 
-This is a production-optimized Next.js 15 platform for Tailor Travels, featuring a full CMS, AI-powered copywriting, and lightning-fast performance.
+This is a production-optimized Next.js 15 platform for Tailor Travels, featuring a full CMS and high-performance static hosting.
 
-## 🚀 How to Publish (Live Deployment)
+## 🚀 How to Publish (Action Required)
 
-To take this website live, follow these steps inside Firebase Studio:
+To make your website live, you must complete the following steps in order:
 
-1.  **Open Firebase Sidebar**: Click the **Firebase icon** (the orange flame) in the left-hand vertical sidebar.
-2.  **Login Step**: If asked to login, a browser window will open. Sign in with your Google account.
-3.  **The "Code"**: If the terminal asks for an "authorization code", copy it from the browser window and paste it back into the Firebase prompt in Studio.
-4.  **Deploy**: Click the **"Deploy to Hosting"** button. Studio will compile your site into the `out` folder and upload it.
-5.  **View Site**: Once finished, your URL will be: `https://studio-6536263211-a9ebf.web.app`
+1.  **Open Firebase Sidebar**: Click the **Orange Flame** icon in the far left vertical menu.
+2.  **Login Step**: Click the login prompt if it appears. A browser window will open. Sign in with your Google account.
+3.  **The Code**: **CRITICAL** - After logging in, the browser will give you a code. Copy that code, return to this tab, and paste it into the terminal/prompt that appeared in the sidebar.
+4.  **Deploy**: Once authenticated, click the **"Deploy to Hosting"** button. This will:
+    - Run `npm run build` (creating the `out` folder).
+    - Upload your static files to Firebase Hosting.
+5.  **View Site**: Your live URL will be: `https://studio-6536263211-a9ebf.web.app`
 
-## 🛠️ Custom Domain
-To use your professional domain (e.g., `tailortravels.co.uk`):
-1. Go to the [Firebase Console](https://console.firebase.google.com/).
-2. Select your project.
-3. Go to **Hosting** > **Add Custom Domain** and follow the instructions to update your DNS settings.
+## 🛠️ Deployment Troubleshooting
+- **Button missing?** Ensure `firebase.json` is in the root folder (it is now).
+- **Site not found?** Ensure you ran the deploy *after* the build finished.
+- **Login failed?** Close the sidebar and click the Firebase icon again to restart the auth flow.
 
 ## 🔑 Admin Access
 Access your management portal at `/admin`.
-- **First Time?** Go to `/admin/setup` to create your account and seed demo data.
-- **Manage Content**: Update holidays, destinations, and branch locations directly from the dashboard.
+- **Manage Content**: Update holidays, destinations, and branch locations.
+- **Launch Guide**: View the checklist on the main Admin Dashboard.
 
 ## 📈 Tech Stack
 - **Framework**: Next.js 15 (Static Export)
 - **Database**: Cloud Firestore (Real-time CMS)
-- **Styling**: Tailwind CSS & ShadCN UI
-- **AI**: Google Genkit (Gemini 2.5 Flash)
+- **Hosting**: Firebase Hosting
