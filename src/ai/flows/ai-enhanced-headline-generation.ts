@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview An AI agent that generates catchy and conversion-optimized headlines for travel deals or hero sections.
  *

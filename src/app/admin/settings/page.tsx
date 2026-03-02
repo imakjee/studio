@@ -10,7 +10,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Save, Sparkles, Loader2, CheckCircle2, Phone, Globe, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { generateHeadline } from '@/ai/flows/ai-enhanced-headline-generation';
 
 export default function AdminSettingsPage() {
   const db = useFirestore();
@@ -61,11 +60,19 @@ export default function AdminSettingsPage() {
   const handleAiEnhanceSubtitle = async () => {
     setAiLoading(true);
     try {
-      const result = await generateHeadline({
-        purpose: "hero section subtitle",
-        details: `Luxury travel agency Tailor Travels. Main heading: ${formData.heroHeading}`,
-        keywords: ["premium", "unforgettable", "luxury", "expert"]
+      const response = await fetch('/api/ai/headline', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          purpose: "hero section subtitle",
+          details: `Luxury travel agency Tailor Travels. Main heading: ${formData.heroHeading}`,
+          keywords: ["premium", "unforgettable", "luxury", "expert"]
+        })
       });
+
+      if (!response.ok) throw new Error('AI request failed');
+
+      const result = await response.json();
       setFormData(prev => ({ ...prev, heroSubtitle: result.headline }));
       toast({ title: "AI Generated", description: "Headline enhanced with AI." });
     } catch (e) {

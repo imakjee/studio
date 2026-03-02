@@ -8,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Sparkles, Save, X, Image as ImageIcon } from 'lucide-react';
-import { generateHolidayDescription } from '@/ai/flows/holiday-description-generator';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
@@ -44,10 +43,18 @@ export default function HolidayForm({ initialData, onSubmit, loading }: HolidayF
     }
     setAiLoading(true);
     try {
-      const result = await generateHolidayDescription({
-        hotelName: formData.name,
-        location: formData.location,
+      const response = await fetch('/api/ai/description', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          hotelName: formData.name,
+          location: formData.location,
+        })
       });
+
+      if (!response.ok) throw new Error('AI request failed');
+
+      const result = await response.json();
       setFormData({ ...formData, description: result.description });
       toast({ title: "AI Generation Success", description: "Description updated." });
     } catch (e) {
