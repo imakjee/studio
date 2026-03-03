@@ -1,30 +1,36 @@
-# Tailor Travels - Bespoke Luxury Travel Platform
+# Tailor Travels - Deployment Guide
 
-This is a production-optimized Next.js 15 platform for Tailor Travels, featuring a full CMS and high-performance static hosting.
+This project is optimized for **Hostinger (Frontend)** and **Firebase (Backend)**.
 
-## 🚀 How to Publish (Action Required)
+## 🚀 How to Deploy to Hostinger
 
-To make your website live, you must complete the following steps in order:
+Follow these steps to put your website live on Hostinger:
 
-1.  **Open Firebase Sidebar**: Click the **Orange Flame** icon in the far left vertical menu.
-2.  **Login Step**: Click the login prompt if it appears. A browser window will open. Sign in with your Google account.
-3.  **The Code**: **CRITICAL** - After logging in, the browser will give you a code. Copy that code, return to this tab, and paste it into the terminal/prompt that appeared in the sidebar.
-4.  **Deploy**: Once authenticated, click the **"Deploy to Hosting"** button. This will:
-    - Run `npm run build` (creating the `out` folder).
-    - Upload your static files to Firebase Hosting.
-5.  **View Site**: Your live URL will be: `https://studio-6536263211-a9ebf.web.app`
+1.  **Build the Project**:
+    - Run `npm run build` in your terminal.
+    - This will create a folder named `out` in your project root.
 
-## 🛠️ Deployment Troubleshooting
-- **Button missing?** Ensure `firebase.json` is in the root folder (it is now).
-- **Site not found?** Ensure you ran the deploy *after* the build finished.
-- **Login failed?** Close the sidebar and click the Firebase icon again to restart the auth flow.
+2.  **Prepare for Upload**:
+    - Open the `out` folder.
+    - Select all files and folders inside `out`.
+    - Right-click and "Compress to ZIP" (name it `website.zip`).
+
+3.  **Hostinger Panel**:
+    - Log in to your Hostinger hPanel.
+    - Go to **File Manager** for your domain.
+    - Open the `public_html` directory.
+    - **Upload** your `website.zip` file here.
+    - **Extract** the ZIP file inside `public_html`.
+    - Ensure the `.htaccess` file is also present in `public_html`.
+
+4.  **Firebase Backend**:
+    - Your Firestore database and Authentication will continue to work automatically from Hostinger as they are connected via API keys in `src/firebase/config.ts`.
 
 ## 🔑 Admin Access
-Access your management portal at `/admin`.
-- **Manage Content**: Update holidays, destinations, and branch locations.
-- **Launch Guide**: View the checklist on the main Admin Dashboard.
+Access your management portal at `yourdomain.com/admin/`.
+- Use the **Setup Page** (`/admin/setup/`) if you haven't created your first admin user yet.
 
-## 📈 Tech Stack
-- **Framework**: Next.js 15 (Static Export)
-- **Database**: Cloud Firestore (Real-time CMS)
-- **Hosting**: Firebase Hosting
+## 📉 Tech Stack
+- **Frontend**: Next.js 15 (Static Export)
+- **Backend**: Firebase Firestore & Auth
+- **Hosting**: Hostinger Shared Hosting
