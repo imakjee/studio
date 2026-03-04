@@ -1,12 +1,7 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  
-  # Redirect /page to /page/index.html
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(.*)/$ $1/index.html [L]
+RewriteEngine On
+RewriteBase /
+RewriteCond % {REQUEST_FILENAME} !-f
+RewriteCond % {REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ $1.html [L,QSA]
 
-  # Handle 404 errors by serving the static 404 page
-  ErrorDocument 404 /404.html
-</IfModule>
+ErrorDocument 404 /404.html

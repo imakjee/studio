@@ -4,7 +4,7 @@ This project is optimized for **Hostinger (Frontend)** and **Firebase (Backend)*
 
 ## 🚀 How to Deploy to Hostinger
 
-Follow these steps to put your website live on Hostinger:
+Follow these steps to put your website live:
 
 1.  **Build the Project**:
     - Run `npm run build` in your terminal.
@@ -12,7 +12,7 @@ Follow these steps to put your website live on Hostinger:
 
 2.  **Prepare for Upload**:
     - Open the `out` folder.
-    - Select all files and folders inside `out`.
+    - Select all files and folders inside `out` (including the `.htaccess` file).
     - Right-click and "Compress to ZIP" (name it `website.zip`).
 
 3.  **Hostinger Panel**:
@@ -21,10 +21,10 @@ Follow these steps to put your website live on Hostinger:
     - Open the `public_html` directory.
     - **Upload** your `website.zip` file here.
     - **Extract** the ZIP file inside `public_html`.
-    - Ensure the `.htaccess` file is also present in `public_html`.
+    - Ensure all files (including `index.html`, `about/`, `_next/`, and `.htaccess`) are directly inside `public_html`.
 
 4.  **Firebase Backend**:
-    - Your Firestore database and Authentication will continue to work automatically from Hostinger as they are connected via API keys in `src/firebase/config.ts`.
+    - Your Firestore database and Authentication will work automatically from Hostinger as they are connected via API keys in `src/firebase/config.ts`.
 
 ## 🔑 Admin Access
 Access your management portal at `yourdomain.com/admin/`.
